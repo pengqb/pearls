@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.hundsun.hsccbp</groupId>
+	<artifactId>pearls</artifactId>
+	<packaging>pom</packaging>
+	<!-- <packaging>war</packaging> -->
+	<version>${pearls.version}</version>
+	<name>pearls Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+
+	<modules>
+		<module>pearls-client</module>
+		<module>pearls-config</module>
+		<module>pearls-dropwizard</module>
+		<module>pearls-kata</module>
+		<module>pearls-hadoop</module>		
+		<module>pearls-nlp</module>		
+	</modules>
+
+	<properties>		
+		<junit.version>4.8.1</junit.version>
+		<pearls.version>0.0.1-SNAPSHOT</pearls.version>
+		<dropwizard.version>0.8.0-SNAPSHOT</dropwizard.version>
+		<hadoop.version>2.5.0-SNAPSHOT</hadoop.version>
+		<fnlp-core.version>2.0-SNAPSHOT</fnlp-core.version>
+		<trove4j.version>3.0.3</trove4j.version>
+		<commons-cli.version>1.2</commons-cli.version>
+		<netty.version>5.0.0.Alpha1</netty.version>
+		<fnlp.version>2.0-SNAPSHOT</fnlp.version>
+	</properties>
+
+	<dependencies>		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

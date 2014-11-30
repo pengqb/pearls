@@ -1,0 +1,30 @@
+#定义Restful api 返回消息的模板
+template: 返回代码=%s,返回消息=%s!
+
+#从网上抓取的原始raw文件对应的文档目录
+#rawHome: "E:/green/heritrix-3.2.0/bin/jobs/shiyan/sina/mirror"
+
+#对原始文件进行抽取后，extracted文件对应的文档目录
+#extractedHome: "E:/nlp"
+
+#被抽取的原始文件或目录
+#rawPath: "E:/green/heritrix-3.2.0/bin/jobs/shiyan/sina/mirror/finance.sina.com.cn/china/20141117/023120833619.shtml"
+rawPath: "E:/green/heritrix-3.2.0/bin/jobs/shiyan/sina/mirror/finance.sina.com.cn/china"
+#ruleMap:
+#  sina.com.cn: afd
+#  ifeng.com: afdf
+#  baidu.com: sdf
+#  hexun.com: adf
+
+#分词模型文件
+cwsModelFile: "D:/pearlsws/pearls/pearls-nlp/models/seg.m"
+#词性标注模型文件
+posModelFile: "D:/pearlsws/pearls/pearls-nlp/models/pos.m"
+
+server:
+  type: simple
+  applicationContextPath: /application
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 9081
