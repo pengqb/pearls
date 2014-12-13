@@ -18,7 +18,7 @@ public class SingleNlpChainTest {
 	public void testTag() {
 		String filePath = "E:\\nlp\\shiyan\\sina\\mirror\\finance.sina.com.cn\\china\\20141116\\015020829745.prl";
 		final Path path = FileSystems.getDefault().getPath(filePath);
-		NlpWrap posTagger = new SingleNlpChain(path, extractConfig,
+		NlpWrap posTagger = new SingleFileNlpChain(path, extractConfig,
 				extractConfig.getModelFilePath());
 		ExtractResult er = posTagger.nlp();
 		assertTrue(CExtract.SUCCESS_CODE.equals(er.getCode()));

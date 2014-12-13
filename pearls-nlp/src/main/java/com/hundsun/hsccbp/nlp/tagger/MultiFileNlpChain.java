@@ -17,13 +17,18 @@ import com.hundsun.hsccbp.nlp.extracts.CExtract;
 import com.hundsun.hsccbp.nlp.extracts.ExtractConfig;
 import com.hundsun.hsccbp.nlp.extracts.ExtractUtil;
 
-public class ComplexNlpChain extends NlpWrap {
+/**
+ * 对多个文件执行Nlp过程
+ * @author pengqb
+ *
+ */
+public class MultiFileNlpChain extends NlpWrap {
 	private final static Logger LOGGER = LoggerFactory
-			.getLogger(ComplexNlpChain.class);
+			.getLogger(MultiFileNlpChain.class);
 
 	private transient List<String> fileList = new ArrayList<String>();
 
-	public ComplexNlpChain(final Path filePath,
+	public MultiFileNlpChain(final Path filePath,
 			final ExtractConfig extractConfig, String modelFilePath){
 		super(filePath, extractConfig, modelFilePath);
 		fileList = ExtractUtil.listDepthFiles(filePath.toString());
@@ -48,19 +53,19 @@ public class ComplexNlpChain extends NlpWrap {
 			Map<String, String> map = getCnFactory().getNer().tagFile(file);
 			String output = file.replaceFirst(CExtract.EXTRACTED_FILE_EXTEND,
 					CExtract.NERRED_FILE_EXTEND);
-			MyCollection.write(map.keySet(), output);
+			MyCollection.write(map.entrySet(), output);
 		}
 	}
 
 	@Override
 	protected void jointParse() throws Exception {
-		String modelFile = extractConfig.getModelFilePath() + "dep.m";
+		String modelFile = extractConfig.getModelFilePath() + "/dep.m";
 		// TODO
 		// 由于fnlp.JointParser本身没有提供解析文件的功能，反而是在JointParerTester里提供了，所以这里解析文件先借用JointParerTester
 		JointParerTester tester = new JointParerTester(modelFile);
 		for (String file : fileList) {
 			String output = file.replaceFirst(CExtract.EXTRACTED_FILE_EXTEND,
-					CExtract.NERRED_FILE_EXTEND);
+					CExtract.JOINTPARSED_FILE_EXTEND);
 			tester.test(file, output, CExtract.FILE_CHARSET_UTF8);
 		}
 	}
@@ -76,4 +81,5 @@ public class ComplexNlpChain extends NlpWrap {
 		// TODO Auto-generated method stub
 
 	}
+
 }

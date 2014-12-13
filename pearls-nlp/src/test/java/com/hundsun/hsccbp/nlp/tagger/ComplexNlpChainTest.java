@@ -18,7 +18,7 @@ public class ComplexNlpChainTest {
 	public void testTag() {
 		String filePath = "E:\\nlp\\shiyan\\sina\\mirror\\finance.sina.com.cn\\china\\20141116";
 		final Path path = FileSystems.getDefault().getPath(filePath);
-		NlpWrap posTagger = new ComplexNlpChain(path, extractConfig,
+		NlpWrap posTagger = new MultiFileNlpChain(path, extractConfig,
 				extractConfig.getModelFilePath());
 		ExtractResult er = posTagger.nlp();
 		assertTrue(CExtract.SUCCESS_CODE.equals(er.getCode()));

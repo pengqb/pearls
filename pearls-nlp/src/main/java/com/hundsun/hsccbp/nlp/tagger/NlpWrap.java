@@ -18,7 +18,7 @@ import com.hundsun.hsccbp.nlp.extracts.ExtractResult;
  */
 public abstract class NlpWrap {
 	private final static Logger LOGGER = LoggerFactory
-			.getLogger(SingleNlpChain.class);
+			.getLogger(SingleFileNlpChain.class);
 	/**
 	 * 被抽取的文件的路径,可能是一个文件所在的路径，也可能是一个目录所在的路径
 	 */
@@ -63,8 +63,9 @@ public abstract class NlpWrap {
 		try {
 			this.cnFactory = CNFactory.getInstance(modelFilePath);
 			this.posTag();
-			this.nerTag();
 			this.jointParse();
+			this.nerTag();
+			this.coreferenceResolution();
 		} catch (Exception e) {
 			code = CExtract.FAIL_CODE;
 			msg = "执行词性标注的过程中发生错误，请联系系统管理员";
@@ -92,6 +93,7 @@ public abstract class NlpWrap {
 	 * @throws IOException
 	 */
 	abstract protected void coreferenceResolution() throws IOException;
+	
 	/**
 	 * 情感分析
 	 * @throws IOException

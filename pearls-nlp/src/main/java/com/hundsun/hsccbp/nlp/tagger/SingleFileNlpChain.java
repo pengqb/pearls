@@ -11,11 +11,16 @@ import org.slf4j.LoggerFactory;
 import com.hundsun.hsccbp.nlp.extracts.CExtract;
 import com.hundsun.hsccbp.nlp.extracts.ExtractConfig;
 
-public class SingleNlpChain extends NlpWrap {
+/**
+ * 对单个文件执行Nlp过程
+ * @author pengqb
+ *
+ */
+public class SingleFileNlpChain extends NlpWrap {
 	private final static Logger LOGGER = LoggerFactory
-			.getLogger(SingleNlpChain.class);
+			.getLogger(SingleFileNlpChain.class);
 
-	public SingleNlpChain(final Path filePath,
+	public SingleFileNlpChain(final Path filePath,
 			final ExtractConfig extractConfig, String modelFilePath) {
 		super(filePath, extractConfig, modelFilePath);
 	}
@@ -55,4 +60,5 @@ public class SingleNlpChain extends NlpWrap {
 		// TODO Auto-generated method stub
 		
 	}
+
 }

@@ -26,6 +26,8 @@ import java.util.HashMap;
 
 import org.fnlp.ml.types.Dictionary;
 import org.fnlp.nlp.cn.ChineseTrans;
+import org.fnlp.nlp.cn.anaphora.rule.RuleAnaphora;
+import org.fnlp.nlp.cn.ner.TimeNormalizer;
 import org.fnlp.nlp.cn.tag.CWSTagger;
 import org.fnlp.nlp.cn.tag.NERTagger;
 import org.fnlp.nlp.cn.tag.POSTagger;
@@ -45,13 +47,26 @@ public class CNFactory {
 	private POSTagger pos;
 	private NERTagger ner;
 	private JointParser parser;
+	private TimeNormalizer timeNormalizer;
+	private RuleAnaphora ruleAnaphora;
+
+	public RuleAnaphora getRuleAnaphora() {
+		return ruleAnaphora;
+	}
+
+	public void setRuleAnaphora(RuleAnaphora ruleAnaphora) {
+		this.ruleAnaphora = ruleAnaphora;
+	}
+
 	private TreeCache treeCache;
 	transient private String modelPath;
 
-	transient private  String segModel = "/seg.m";
-	transient private  String posModel = "/pos.m";
-	transient private  String parseModel = "/dep.m";
+	transient private String segModel = "/seg.m";
+	transient private String posModel = "/pos.m";
+	transient private String parseModel = "/dep.m";
+	transient private String timeModel = "/time.m";
 	private Dictionary dict = new Dictionary(true);
+
 	public CWSTagger getSeg() {
 		return seg;
 	}
@@ -204,10 +219,20 @@ public class CNFactory {
 			factory.loadSeg();
 			factory.loadTag();
 			factory.loadNER();
+			factory.loadTimeNormalizer();
+			factory.loadRuleAnaphora();
 			factory.loadParser();
 		}
 		factory.setDict();
 		return factory;
+	}
+
+	public TimeNormalizer getTimeNormalizer() {
+		return timeNormalizer;
+	}
+
+	public void setTimeNormalizer(TimeNormalizer timeNormalizer) {
+		this.timeNormalizer = timeNormalizer;
 	}
 
 	/**
@@ -230,6 +255,16 @@ public class CNFactory {
 	public void loadNER() throws LoadModelException {
 		if (ner == null && pos != null) {
 			ner = new NERTagger(pos);
+		}
+	}
+
+	/**
+	 * 读入时间表达式识别模型
+	 */
+	public void loadTimeNormalizer() {
+		if (timeNormalizer == null) {
+			String file = this.modelPath + timeModel;
+			timeNormalizer = new TimeNormalizer(file);
 		}
 	}
 
@@ -259,6 +294,13 @@ public class CNFactory {
 			String file = this.modelPath + segModel;
 			seg = new CWSTagger(file);
 			seg.setEnFilter(isEnFilter);
+		}
+	}
+
+	public void loadRuleAnaphora() throws LoadModelException  {
+		if (ruleAnaphora == null) {
+			loadTag();
+			ruleAnaphora = new RuleAnaphora(pos);
 		}
 	}
 

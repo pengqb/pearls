@@ -10,8 +10,8 @@ import javax.ws.rs.core.MediaType;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
-import com.hundsun.hsccbp.nlp.tagger.ComplexNlpChain;
-import com.hundsun.hsccbp.nlp.tagger.SingleNlpChain;
+import com.hundsun.hsccbp.nlp.tagger.MultiFileNlpChain;
+import com.hundsun.hsccbp.nlp.tagger.SingleFileNlpChain;
 import com.hundsun.hsccbp.nlp.tagger.NlpWrap;
 
 @Path("/nlp")
@@ -55,7 +55,7 @@ public class ExtractResource {
 			@QueryParam("modelFilePath") final Optional<String> modelFilePath) {
 		final java.nio.file.Path filePath = FileSystems.getDefault().getPath(
 				path.or(extractConfig.getRawPath()));
-		NlpWrap posTagger = new SingleNlpChain(filePath, extractConfig,
+		NlpWrap posTagger = new SingleFileNlpChain(filePath, extractConfig,
 				modelFilePath.or(extractConfig.getModelFilePath()));
 		return posTagger.nlp();
 	}
@@ -68,7 +68,7 @@ public class ExtractResource {
 			@QueryParam("modelFilePath") final Optional<String> modelFilePath) {
 		final java.nio.file.Path filePath = FileSystems.getDefault().getPath(
 				path.or(extractConfig.getRawPath()));
-		NlpWrap posTagger = new ComplexNlpChain(filePath, extractConfig,
+		NlpWrap posTagger = new MultiFileNlpChain(filePath, extractConfig,
 				modelFilePath.or(extractConfig.getModelFilePath()));
 		return posTagger.nlp();
 	}
