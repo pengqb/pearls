@@ -57,7 +57,12 @@ public final class WordModel {
 	 */
 	public boolean isSentimeent(WordPos wordPos){
 		boolean isSentiment = false;
-		postives.get(wordPos);
+		if(postives.containsKey(wordPos)){
+			isSentiment = true;
+		}
+		if(negatives.containsKey(wordPos)){
+			isSentiment = true;
+		}
 		return isSentiment;
 	}
 }
