@@ -17,4 +17,6 @@ public class CExtract {
 	public final static String NERRED_FILE_EXTEND = "ner";
 	//依赖句法分析文件的扩展名
 	public final static String JOINTPARSED_FILE_EXTEND = "dep";
+	//对应操作系统文件换行符
+	public final static String NEWLINE = System.getProperty("line.separator");
 }

@@ -11,7 +11,7 @@ import java.util.Set;
  * @author pengqb
  * 
  */
-public class WordModel {
+public final class WordModel {
 	static private WordModel wordModel;
 	/**
 	 * 积极性词,如翻红/向上/看涨/强势/做多/上涨/冲高/反弹/走牛/牛市/看多/上攻/突破/攀升/乐观/阳线/利好/买入/希望
@@ -48,5 +48,16 @@ public class WordModel {
 			wordModel = new WordModel();
 		}
 		return wordModel;
+	}
+	
+	/**
+	 * 判断一个词是否是情感词
+	 * @param wordPos
+	 * @return
+	 */
+	public boolean isSentimeent(WordPos wordPos){
+		boolean isSentiment = false;
+		postives.get(wordPos);
+		return isSentiment;
 	}
 }
