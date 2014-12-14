@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,49 +16,18 @@ import com.hundsun.hsccbp.nlp.extracts.ExtractResult;
 
 public class SentenceNlpChainTest {
 	transient final ExtractConfig extractConfig = new ExtractConfig();
-	NlpWrap sentenceNlpChain;
+	SentenceJointParser sentenceJointParser;
 	@Before
 	public void initialize(){
-		String filePath = "E:\\nlp\\shiyan\\sina\\mirror\\finance.sina.com.cn\\china\\20141116\\015020829745.prl";
-		final Path path = FileSystems.getDefault().getPath(filePath);
-		sentenceNlpChain = new SentenceNlpChain(path, extractConfig,
-				extractConfig.getModelFilePath());
+		CNFactory cnFactory = CNFactory.getInstance(extractConfig.getModelFilePath());
+		sentenceJointParser = new SentenceJointParser(cnFactory);
 	}
 
-	@Test
-	public void testPosTag() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testNerTag() {
-		fail("Not yet implemented");
-	}
-
+	
 	@Test
 	public void testJointParse() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCoreferenceResolution() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testTimeRecognite() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSentimentAnalysis() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testNlp() {
-		ExtractResult er = sentenceNlpChain.nlp();
-		assertTrue(CExtract.SUCCESS_CODE.equals(er.getCode()));
+		List<List<String>> dependencyList = sentenceJointParser.jointParse("复旦大学创建于1905年,他位于上海市，这个大学培育了好多优秀的学生。");
+		assertTrue(!dependencyList.isEmpty());
 	}
 
 }
