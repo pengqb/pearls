@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.fnlp.nlp.cn.Chars;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,14 +85,16 @@ public class SingleExtractor extends AbstractExtractor {
 		final CharSequence content = readChannel(readFileChannel);
 		// TODO 几个字符串的命名不好
 		final String matchStr = match(content);
-		final String excludedPatternStr = excludePatternStr(matchStr);
+		final String dbcStr =Chars.ToDBC(matchStr);//全角字符转换成半角字符
+		final String excludedPatternStr = excludePatternStr(dbcStr);
 		final String excludedHtmlStr = excludeHtmlTag(excludedPatternStr);
+		final String excludeBlankStr = replaceBlackWithStop(excludedHtmlStr);
 		if ("".equals(matchStr)) {
 			LOGGER.info("被抽取文件无法抽取出内容，被抽取文件名={},抽取规则={}",
 					this.filePath.toString(), this.rule.toString());
 		} else {
 			// 从新浪下载的文件格式是gbk编码，nlp加工的是utf-8编码，所以要进行编码转换
-			String matchStrUtf8 = ExtractUtil.changeCharset(excludedHtmlStr,
+			String matchStrUtf8 = ExtractUtil.changeCharset(excludeBlankStr,
 					CExtract.FILE_CHARSET_GBK, CExtract.FILE_CHARSET_UTF8);
 			// 保存成utf-8编码格式，因为nlp加工的是utf-8编码格式的文档。
 			writeChannel(writeFileChannel, matchStrUtf8);
@@ -210,6 +213,18 @@ public class SingleExtractor extends AbstractExtractor {
 		// remainStr.replaceAll("(\\<(\\/)?+(\\w|\\s|\\p{Punct}).*\\>){1}", "");
 		remainStr = remainStr.replaceAll(
 				"(\\<(\\/)?+(\\w|\\s|\\p{Punct})*\\>)", "");
+		return remainStr.trim();
+	}
+	
+	/**
+	 * 把空格字符串替换成句号
+	 * @param srcStr
+	 * @return
+	 */
+	public String replaceBlackWithStop(final String srcStr){
+		String remainStr = srcStr;
+		remainStr = remainStr.replaceAll(
+				"。*(\\s+)", "。");
 		return remainStr.trim();
 	}
 

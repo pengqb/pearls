@@ -66,6 +66,13 @@ public class SingleExtractorTest {
 		final String destStr = singleExtractor.excludeHtmlTag(srcStr);
 		assertEquals("张三", destStr);
 	}
+	
+	@Test
+	public void testReplaceBlackWithStop(){
+		String srcStr = "正式。     我是兵  我是匪 你好啊。你来自哪里　　";
+		final String destStr = singleExtractor.replaceBlackWithStop(srcStr);
+		assertEquals("正式。我是兵。我是匪。你好啊。你来自哪里。", destStr);
+	}
 
 	@Test
 	public void testSingleExtractor() {

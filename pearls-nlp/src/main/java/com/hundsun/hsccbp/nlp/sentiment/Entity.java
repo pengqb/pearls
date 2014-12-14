@@ -21,6 +21,12 @@ public class Entity {
 	 * 同义实体对应的同义词
 	 */
 	private Entity next;
+	
+	public Entity(String name,EntityType type,Entity entity){
+		this.name = name;
+		this.type = type;
+		this.next = entity;
+	}
 
 	/**
 	 * 实体同义词消解，找到最终的根实体
