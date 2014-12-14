@@ -35,14 +35,17 @@ import org.fnlp.nlp.parser.dep.DependencyTree;
 import org.fnlp.nlp.parser.dep.JointParser;
 import org.fnlp.nlp.parser.dep.TreeCache;
 import org.fnlp.util.exception.LoadModelException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 统一的自然语言处理入口 自然语言处理对象有此函数产生， 确保整个系统只有这一个对象，避免重复构造。
  * 
  * @author xpqiu
  */
-public class CNFactory {
-
+public final class CNFactory {
+	private final static Logger LOGGER = LoggerFactory
+			.getLogger(CNFactory.class);
 	private CWSTagger seg;
 	private POSTagger pos;
 	private NERTagger ner;
@@ -187,8 +190,7 @@ public class CNFactory {
 	 * @return
 	 * @throws LoadModelException
 	 */
-	public static CNFactory getInstance(String modelPath)
-			throws LoadModelException {
+	public static CNFactory getInstance(String modelPath){
 		return getInstance(modelPath, Models.ALL);
 	}
 
@@ -202,27 +204,31 @@ public class CNFactory {
 	 * @return
 	 * @throws LoadModelException
 	 */
-	public static CNFactory getInstance(String modelPath, Models model)
-			throws LoadModelException {
+	public static CNFactory getInstance(String path, Models model) {
+		String modelPath = path;
 		if (modelPath.endsWith("/")) {
 			modelPath = modelPath.substring(0, modelPath.length() - 1);
 		}
 		CNFactory factory = new CNFactory(modelPath);
-		if (model == Models.SEG) {
-			factory.loadSeg();
-		} else if (model == Models.TAG) {
-			factory.loadTag();
-		} else if (model == Models.SEG_TAG) {
-			factory.loadSeg();
-			factory.loadTag();
-		} else if (model == Models.ALL) {
-			factory.loadSeg();
-			factory.loadTag();
-			factory.loadNER();
-			factory.loadTimeNormalizer();
-			factory.loadRuleAnaphora();
-			factory.loadParser();
-		}
+		try{
+			if (model == Models.SEG) {
+				factory.loadSeg();
+			} else if (model == Models.TAG) {
+				factory.loadTag();
+			} else if (model == Models.SEG_TAG) {
+				factory.loadSeg();
+				factory.loadTag();
+			} else if (model == Models.ALL) {
+				factory.loadSeg();
+				factory.loadTag();
+				factory.loadNER();
+				factory.loadTimeNormalizer();
+				factory.loadRuleAnaphora();
+				factory.loadParser();
+			}
+		}catch(LoadModelException e){
+			LOGGER.error("加载模型文件失败", e);
+		}		
 		factory.setDict();
 		return factory;
 	}
