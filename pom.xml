@@ -21,8 +21,8 @@
 	<properties>		
 		<junit.version>4.8.1</junit.version>
 		<pearls.version>0.0.1-SNAPSHOT</pearls.version>
-		<dropwizard.version>0.8.0-SNAPSHOT</dropwizard.version>
-		<hadoop.version>2.5.0-SNAPSHOT</hadoop.version>
+		<dropwizard.version>0.8.2</dropwizard.version>
+		<hadoop.version>2.7.1</hadoop.version>
 		<fnlp-core.version>2.0-SNAPSHOT</fnlp-core.version>
 		<trove4j.version>3.0.3</trove4j.version>
 		<commons-cli.version>1.2</commons-cli.version>
