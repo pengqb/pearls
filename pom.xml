@@ -15,7 +15,7 @@
 		<module>pearls-dropwizard</module>
 		<module>pearls-kata</module>
 		<module>pearls-hadoop</module>		
-		<module>pearls-nlp</module>		
+		<!-- <module>pearls-nlp</module>	 -->	
 	</modules>
 
 	<properties>		

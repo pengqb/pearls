@@ -306,7 +306,7 @@ public final class CNFactory {
 	public void loadRuleAnaphora() throws LoadModelException  {
 		if (ruleAnaphora == null) {
 			loadTag();
-			ruleAnaphora = new RuleAnaphora(pos);
+			//ruleAnaphora = new RuleAnaphora(pos);
 		}
 	}
 

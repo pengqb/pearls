@@ -59,17 +59,17 @@ public class SentenceJointParser {
 	 * @throws IOException
 	 */
 	private void dependencyTreeAttachTime(DependencyTree tree) {
-		List<DependencyTree> timePhraseList = tree.getTimePhrase();
-		for (DependencyTree dt : timePhraseList) {
-			String timePhrash = "";
-			for (String str : dt.getWords(tree.size())) {
-				if (null != str) {
-					timePhrash += str;
-				}
-			}
-			String time = timeRecognite(timePhrash);
-			dt.time = time;
-		}
+//		List<DependencyTree> timePhraseList = tree.getTimePhrase();
+//		for (DependencyTree dt : timePhraseList) {
+//			String timePhrash = "";
+//			for (String str : dt.getWords(tree.size())) {
+//				if (null != str) {
+//					timePhrash += str;
+//				}
+//			}
+//			String time = timeRecognite(timePhrash);
+//			dt.time = time;
+//		}
 	}
 
 	/**
@@ -97,11 +97,11 @@ public class SentenceJointParser {
 	 */
 	private void coreferenceResolution(List<List<String>> dependencyList,
 			String sentence) {
-		LinkedList<EntityGroup> ll = cnFactory.getRuleAnaphora().resolve(
-				sentence);
-		for (EntityGroup eg : ll) {
-			dependencyList.get(eg.anaphor.getStart()).set(6,
-					String.valueOf(eg.antecedent.getStart()));
-		}
+//		LinkedList<EntityGroup> ll = cnFactory.getRuleAnaphora().resolve(
+//				sentence);
+//		for (EntityGroup eg : ll) {
+//			dependencyList.get(eg.anaphor.getStart()).set(6,
+//					String.valueOf(eg.antecedent.getStart()));
+//		}
 	}
 }
