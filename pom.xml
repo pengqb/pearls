@@ -23,6 +23,7 @@
 		<pearls.version>0.0.1-SNAPSHOT</pearls.version>
 		<dropwizard.version>0.8.2</dropwizard.version>
 		<hadoop.version>2.7.1</hadoop.version>
+		<spark.version>2.0.2</spark.version>
 		<fnlp-core.version>2.0-SNAPSHOT</fnlp-core.version>
 		<trove4j.version>3.0.3</trove4j.version>
 		<commons-cli.version>1.2</commons-cli.version>
