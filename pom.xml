@@ -30,6 +30,7 @@
 		<netty.version>5.0.0.Alpha1</netty.version>
 		<fnlp.version>2.0-SNAPSHOT</fnlp.version>
 		<joda.version>2.6</joda.version>
+		<fastjson.version>1.2.16</fastjson.version>
 	</properties>
 
 	<dependencies>		

@@ -1,7 +1,6 @@
 package com.hundsun.hsccbp.hadoop;
 
 import java.io.IOException;
-import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -13,8 +12,14 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
+import org.apache.log4j.Logger;
 
-public class WordMapReduce {
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
+public class ArchivesDpMapReduce {
+	private static Logger log = Logger.getLogger(ArchivesDpMapReduce.class);
 
 	public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
 
@@ -22,12 +27,21 @@ public class WordMapReduce {
 		private Text word = new Text();
 
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-			StringTokenizer itr = new StringTokenizer(value.toString());
-			
-			while (itr.hasMoreTokens()) {
-				word.set(itr.nextToken());
+			//JSONObject valueJson = null;
+			JSONArray jArray = null;
+			try {
+				jArray = JSONArray.parseArray(value.toString());
+				//valueJson = (JSONObject) JSON.parseObject(value.toString());
+			} catch (Exception e) {
+				log.error("数据不是合法的json", e);
+				return;
+			}
+			for(Object valueJson : jArray){
+				String ep_id = ((JSONObject)valueJson).getString("partitionKey").split("_")[1];
+				word.set(ep_id);
 				context.write(word, one);
 			}
+			
 		}
 	}
 
@@ -43,18 +57,26 @@ public class WordMapReduce {
 			context.write(key, result);
 		}
 	}
+	
+	/**
+	 * 测试参数
+	 * args[0]: hdfs://localhost:19000/archivesDp
+     * args[1]:hdfs://localhost:19000/archivesdpResult
+	 * @param args
+	 * @throws Exception
+	 */
 
 	public static void main(String[] args) throws Exception {
-		String[] fileArray = { "hdfs://localhost:19000/workCount", "hdfs://localhost:19000/workCountOut1" };
+		//String[] fileArray = { "d:/tools/hadoop/hadoop-2.7.3/archivesDp/10.0.0.5_archivesdp_20161208020437.txt", "d:/tools/hadoop/hadoop-2.7.3/test2.txt" };
+		String[] fileArray = { "d:/tools/hadoop/hadoop-2.7.3/archivesDp/10.0.0.5_archivesdp_20161208020437.txt", "hdfs://localhost:19000/workCountOut1" };
 		Configuration conf = new Configuration();
-		conf.set("mapred.job.tracker", "127.0.0.1:19001");
 		String[] otherArgs = new GenericOptionsParser(conf, fileArray).getRemainingArgs();
 		if (otherArgs.length < 2) {
-			System.err.println("Usage: wordcount <in> [<in>...] <out>");
+			System.err.println("Usage: EP_Count <in> [<in>...] <out>");
 			System.exit(2);
 		}
-		Job job = Job.getInstance(conf, "word count");
-		job.setJarByClass(WordMapReduce.class);
+		Job job = Job.getInstance(conf, "EP Count");
+		job.setJarByClass(ArchivesDpMapReduce.class);
 		job.setMapperClass(TokenizerMapper.class);
 		job.setCombinerClass(IntSumReducer.class);
 		job.setReducerClass(IntSumReducer.class);
