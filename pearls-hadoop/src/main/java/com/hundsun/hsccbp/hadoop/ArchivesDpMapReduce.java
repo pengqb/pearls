@@ -27,11 +27,9 @@ public class ArchivesDpMapReduce {
 		private Text word = new Text();
 
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-			//JSONObject valueJson = null;
 			JSONArray jArray = null;
 			try {
 				jArray = JSONArray.parseArray(value.toString());
-				//valueJson = (JSONObject) JSON.parseObject(value.toString());
 			} catch (Exception e) {
 				log.error("数据不是合法的json", e);
 				return;
@@ -41,7 +39,6 @@ public class ArchivesDpMapReduce {
 				word.set(ep_id);
 				context.write(word, one);
 			}
-			
 		}
 	}
 
@@ -65,10 +62,9 @@ public class ArchivesDpMapReduce {
 	 * @param args
 	 * @throws Exception
 	 */
-
 	public static void main(String[] args) throws Exception {
 		//String[] fileArray = { "d:/tools/hadoop/hadoop-2.7.3/archivesDp/10.0.0.5_archivesdp_20161208020437.txt", "d:/tools/hadoop/hadoop-2.7.3/test2.txt" };
-		String[] fileArray = { "d:/tools/hadoop/hadoop-2.7.3/archivesDp/10.0.0.5_archivesdp_20161208020437.txt", "hdfs://localhost:19000/workCountOut1" };
+		String[] fileArray = { "d:/tools/hadoop/hadoop-2.7.3/archivesDp/*.txt", "hdfs://localhost:19000/workCountOut1" };
 		Configuration conf = new Configuration();
 		String[] otherArgs = new GenericOptionsParser(conf, fileArray).getRemainingArgs();
 		if (otherArgs.length < 2) {
