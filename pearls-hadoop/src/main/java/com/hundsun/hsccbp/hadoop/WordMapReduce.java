@@ -44,7 +44,7 @@ public class WordMapReduce {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String... args) throws Exception {
 		String[] fileArray = { "hdfs://localhost:19000/workCount", "hdfs://localhost:19000/workCountOut1" };
 		Configuration conf = new Configuration();
 		conf.set("mapred.job.tracker", "127.0.0.1:19001");

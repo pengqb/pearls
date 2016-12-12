@@ -82,7 +82,7 @@ public class ArchivesDpTopSort {
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String... args) throws Exception {
 		String[] fileArray = {
 				"hdfs://localhost:19000/workCountOut1/part-r-00000",
 				"hdfs://localhost:19000/topkey" };

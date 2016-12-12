@@ -62,7 +62,7 @@ public class ArchivesDpMapReduce {
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String... args) throws Exception {
 		//String[] fileArray = { "d:/tools/hadoop/hadoop-2.7.3/archivesDp/10.0.0.5_archivesdp_20161208020437.txt", "d:/tools/hadoop/hadoop-2.7.3/test2.txt" };
 		String[] fileArray = { "d:/tools/hadoop/hadoop-2.7.3/archivesDp/*.txt", "hdfs://localhost:19000/workCountOut1" };
 		Configuration conf = new Configuration();

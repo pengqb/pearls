@@ -6,7 +6,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 
 public class QuickStart {
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		//定义本地文件
 		//String file = "D:\\tools\\hadoop\\hadoop-2.7.3\\mysql.sql"; 
 		

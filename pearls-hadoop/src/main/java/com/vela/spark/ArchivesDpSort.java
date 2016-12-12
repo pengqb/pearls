@@ -47,7 +47,7 @@ public class ArchivesDpSort {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		String file = "d:/tools/hadoop/hadoop-2.7.3/archivesDp/*.txt";
 		// master is a Spark, Mesos or YARN cluster URL, or a special “local”
 		// string to run in local mode.
