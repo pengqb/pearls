@@ -15,11 +15,11 @@
 		<module>pearls-dropwizard</module>
 		<module>pearls-kata</module>
 		<module>pearls-hadoop</module>		
+		<module>pearls-iot</module>		
 		<!-- <module>pearls-nlp</module>	 -->	
 	</modules>
 
 	<properties>		
-		<junit.version>4.8.1</junit.version>
 		<pearls.version>0.0.1-SNAPSHOT</pearls.version>
 		<dropwizard.version>0.8.2</dropwizard.version>
 		<hadoop.version>2.7.1</hadoop.version>
@@ -31,6 +31,10 @@
 		<fnlp.version>2.0-SNAPSHOT</fnlp.version>
 		<joda.version>2.6</joda.version>
 		<fastjson.version>1.2.16</fastjson.version>
+		<influxdb.version>2.5</influxdb.version>
+		<junit.version>4.12</junit.version>
+		<assertj.version>2.6.0</assertj.version>
+		<mockito.version>2.2.21</mockito.version>
 	</properties>
 
 	<dependencies>		
