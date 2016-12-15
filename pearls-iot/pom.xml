@@ -13,6 +13,10 @@
 		<module>active</module>
 		<module>publish</module>
 		<module>archives</module>
+		<module>coapproxy</module>
+		<module>gateway</module>
+		<module>ota</module>
+		<module>statistics</module>
 		<module>common</module>
 		<module>device</module>
 		<module>user</module>
