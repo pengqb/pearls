@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>pearls</artifactId>
-    <groupId>com.hundsun.hsccbp</groupId>
+    <artifactId>pearls-iot</artifactId>
+    <groupId>com.vela</groupId>
     <version>${pearls.version}</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>pearls-hadoop</artifactId>
-  <name>hadoop</name>
+  <groupId>com.vela.iot</groupId>
+  <artifactId>statistics</artifactId>
+  <name>statistics</name>
+  <url>http://maven.apache.org</url>
   <build>
-    <finalName>kata</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
@@ -34,10 +35,10 @@
             <configuration>
               <transformers>
                 <transformer />
-                <transformer>
-                  <mainClass>com.hundsun.hsccbp.dropwizard.HelloWorldApplication</mainClass>
-                </transformer>
               </transformers>
+              <transformer>
+                <mainClass>com.vela.iot.statistics.RestESClient</mainClass>
+              </transformer>
             </configuration>
           </execution>
         </executions>

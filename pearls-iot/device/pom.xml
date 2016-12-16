@@ -9,12 +9,8 @@
   <groupId>com.vela.iot</groupId>
   <artifactId>device</artifactId>
   <packaging>jar</packaging>
-  <name>common</name>
+  <name>device</name>
   <url>http://maven.apache.org</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
   <dependencies>   
   </dependencies>

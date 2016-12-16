@@ -9,12 +9,8 @@
   <groupId>com.vela.iot</groupId>
   <artifactId>ota</artifactId>
   <packaging>jar</packaging>
-  <name>common</name>
+  <name>ota</name>
   <url>http://maven.apache.org</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
   <dependencies>   
   </dependencies>

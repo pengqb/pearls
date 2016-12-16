@@ -6,10 +6,10 @@
     <version>${pearls.version}</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>pearls-hadoop</artifactId>
-  <name>hadoop</name>
+  <artifactId>pearls-dropwizard</artifactId>
+  <name>Dropwizard</name>
   <build>
-    <finalName>kata</finalName>
+    <finalName>dropwizard</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>

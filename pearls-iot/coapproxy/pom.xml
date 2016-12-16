@@ -9,12 +9,8 @@
   <groupId>com.vela.iot</groupId>
   <artifactId>coapproxy</artifactId>
   <packaging>jar</packaging>
-  <name>common</name>
+  <name>coapproxy</name>
   <url>http://maven.apache.org</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
   <dependencies>   
   </dependencies>

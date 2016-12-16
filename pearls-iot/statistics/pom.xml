@@ -9,12 +9,8 @@
 	<groupId>com.vela.iot</groupId>
 	<artifactId>statistics</artifactId>
 	<packaging>jar</packaging>
-	<name>common</name>
+	<name>statistics</name>
 	<url>http://maven.apache.org</url>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -31,13 +27,65 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-test-framework</artifactId>
 			<version>${lucene.version}</version>
-			<!-- <scope>test</scope>-->
+			<!-- <scope>test</scope> -->
 		</dependency>
 		<dependency>
 			<groupId>org.elasticsearch.test</groupId>
 			<artifactId>framework</artifactId>
 			<version>${elasticsearch.version}</version>
-			<!--  <scope>test</scope>-->
+			<!-- <scope>test</scope> -->
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${jar.version}</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>${shade.version}</version>
+				<configuration>
+					<createDependencyReducedPom>true</createDependencyReducedPom>
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+							</transformers>
+							<transformer
+								implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								<mainClass>com.vela.iot.statistics.RestESClient</mainClass>
+							</transformer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

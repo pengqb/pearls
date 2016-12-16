@@ -14,12 +14,14 @@
 		<module>pearls-config</module>
 		<module>pearls-dropwizard</module>
 		<module>pearls-kata</module>
-		<module>pearls-hadoop</module>		
-		<module>pearls-iot</module>		
-		<!-- <module>pearls-nlp</module>	 -->	
+		<module>pearls-hadoop</module>
+		<module>pearls-iot</module>
+		<!-- <module>pearls-nlp</module> -->
 	</modules>
 
-	<properties>		
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
 		<pearls.version>0.0.1-SNAPSHOT</pearls.version>
 		<dropwizard.version>0.8.2</dropwizard.version>
 		<hadoop.version>2.7.1</hadoop.version>
@@ -37,19 +39,63 @@
 		<mockito.version>2.2.21</mockito.version>
 		<elasticsearch.version>5.1.1</elasticsearch.version>
 		<lucene.version>6.3.0</lucene.version>
-		
+		<log4j.version>2.7</log4j.version>
+		<slf4j.version>1.7.21</slf4j.version>
+		<shade.version>2.4.1</shade.version>
+		<jar.version>2.4</jar.version>
+
 	</properties>
 
-	<dependencies>		
+	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
 	</dependencies>
-	
+
 	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<targetPath>${project.build.directory}</targetPath>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -57,10 +103,9 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-					<encoding>utf-8</encoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-			
 		</plugins>
 	</build>
 </project>
