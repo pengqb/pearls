@@ -1,0 +1,1 @@
+nohup java -Djava.rmi.server.hostname=192.168.1.108 -Dcom.sun.management.jmxremote.port=1090 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -server -Xms128m -Xmx256m -XX:+PrintGC -XX:+PrintGCTimeStamps -XX:+PrintGCApplicationStoppedTime -Xloggc:./gc.log -jar statistics.jar >/dev/null &

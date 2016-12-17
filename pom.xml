@@ -80,7 +80,7 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<targetPath>${project.build.directory}</targetPath>
+				<targetPath>${project.build.directory}/classes</targetPath>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>

@@ -1,30 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>    
-<configuration status="warn" monitorInterval="30"> 
-  <Properties>
-	<Property name="logpath">logs</Property>
-  </Properties>   
-  <appenders>    
-    <Console name="Console" target="SYSTEM_OUT">    
-      <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>    
-      <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>    
-    </Console>    
-    <RollingFile name="fileapi" fileName="logs/api.log"
-		filePattern="logs/api-%d{yyyy-MM-dd-HH}.log">
-		<PatternLayout
-			pattern="%replace{%d{yyyy-MM-dd HH:mm:ss.SSS}|${hostName}|%-4level{lowerCase=true}|%t|%C|%M|%msg%n}{^\s+}{}">
-		</PatternLayout>
-		<Policies>
-			<TimeBasedTriggeringPolicy modulate="true"
-				interval="1" />
-		</Policies>
-	</RollingFile>   
-  </appenders>    
-  <loggers> 
-    <logger name="com.vela.iot.statistics" level="debug" additivity="false"/>  
-    
-    <root level="debug" additivity="false">    
-      <appender-ref ref="fileapi"/>   
-      <appender-ref ref="Console"/>     
-    </root>    
-  </loggers>    
-</configuration>
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="debug">
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+</Configuration>

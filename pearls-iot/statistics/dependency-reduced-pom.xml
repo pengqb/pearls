@@ -11,18 +11,8 @@
   <name>statistics</name>
   <url>http://maven.apache.org</url>
   <build>
+    <finalName>statistics</finalName>
     <plugins>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>${jar.version}</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>${shade.version}</version>
@@ -35,10 +25,10 @@
             <configuration>
               <transformers>
                 <transformer />
+                <transformer>
+                  <mainClass>com.vela.iot.statistics.RestESClient</mainClass>
+                </transformer>
               </transformers>
-              <transformer>
-                <mainClass>com.vela.iot.statistics.RestESClient</mainClass>
-              </transformer>
             </configuration>
           </execution>
         </executions>
@@ -51,6 +41,7 @@
                 <exclude>META-INF/*.SF</exclude>
                 <exclude>META-INF/*.DSA</exclude>
                 <exclude>META-INF/*.RSA</exclude>
+                <exclude>log4j2-test.properties</exclude>
               </excludes>
             </filter>
           </filters>
