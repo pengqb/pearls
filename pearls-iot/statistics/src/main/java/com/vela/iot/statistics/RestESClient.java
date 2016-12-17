@@ -35,10 +35,6 @@ public class RestESClient {
 	public void health() throws IOException {
 		//"/_cat/nodes"
 		Response response = restClient.performRequest("GET", "/_cat/health", Collections.singletonMap("v", "true"));
-		log.error("error");
-		log.info("info");
-		log.debug("debug");
-		log.trace("trace");
 		log.debug(EntityUtils.toString(response.getEntity()));
 	}
 

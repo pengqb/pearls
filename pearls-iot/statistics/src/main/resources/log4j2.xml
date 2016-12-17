@@ -1,13 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
-  <Appenders>
-    <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-    </Console>
-  </Appenders>
-  <Loggers>
-    <Root level="debug">
-      <AppenderRef ref="Console"/>
-    </Root>
-  </Loggers>
-</Configuration>
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出。 -->
+<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数。 -->
+<configuration status="error" monitorInterval="30">
+	<Properties>
+		<!-- ${sys:catalina.home}/logs -->
+		<Property name="logpath">/var/logs</Property>
+	</Properties>
+	<appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+			<ThresholdFilter level="debug" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n" />
+		</Console>
+		<!--append=“false”指定不追加到文件末尾,即每次运行程序会自动清空，这个也挺有用的，适合临时测试用 -->
+		<File name="log" fileName="${logpath}/statistics.log" append="false">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n" />
+		</File>
+		<RollingFile name="fileapi" fileName="${logpath}/statistics.log"
+			filePattern="${logpath}/statistics-%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout
+				pattern="%replace{%d{yyyy-MM-dd HH:mm:ss.SSS}|${hostName}|%-4level{lowerCase=true}|%t|%C|%M|%msg%n}{^\s+}{}">
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy modulate="true"
+					interval="1" />
+			</Policies>
+		</RollingFile>
+	</appenders>
+	<loggers>
+		<!--我们只让这个logger输出dubug信息，其他的都是info级别 -->
+		<!-- additivity默认为true，由于这个logger也是满足root的，所以会被打印两遍。additivity=“false”可以避免父级遗传,只打印一遍 -->
+		<logger name="com.vela.iot.statistics" level="debug"
+			additivity="false">
+			<appender-ref ref="fileapi" />
+			<appender-ref ref="Console" />
+		</logger>
+		<root level="info" additivity="false">
+			<appender-ref ref="fileapi" />
+			<appender-ref ref="Console" />
+		</root>
+	</loggers>
+</configuration>
