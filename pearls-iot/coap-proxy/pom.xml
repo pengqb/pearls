@@ -7,9 +7,9 @@
 		<version>${pearls.version}</version>
 	</parent>
   <groupId>com.vela.iot</groupId>
-  <artifactId>coapproxy</artifactId>
+  <artifactId>coap-proxy</artifactId>
   <packaging>jar</packaging>
-  <name>coapproxy</name>
+  <name>coap-proxy</name>
   <url>http://maven.apache.org</url>
 
   <dependencies>   
