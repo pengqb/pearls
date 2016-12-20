@@ -9,14 +9,15 @@
 	<name>pearls Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
-	<modules>
-		<module>pearls-client</module>
+	<modules>		
 		<module>pearls-config</module>
-		<module>pearls-dropwizard</module>
-		<module>pearls-kata</module>
+		<module>pearls-dropwizard</module>		
 		<module>pearls-hadoop</module>
 		<module>pearls-iot</module>
-		<!-- <module>pearls-nlp</module> -->
+		<!-- <module>pearls-nlp</module>
+		<module>pearls-client</module>
+		<module>pearls-kata</module>
+		 -->
 	</modules>
 
 	<properties>
