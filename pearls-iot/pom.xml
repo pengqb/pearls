@@ -10,7 +10,7 @@
 	<artifactId>pearls-iot</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>active</module>
+		<module>auth</module>
 		<module>publish</module>
 		<module>archives</module>
 		<module>coapproxy</module>
@@ -20,5 +20,7 @@
 		<module>common</module>
 		<module>device</module>
 		<module>user</module>
+		<module>rules</module>
+		<module>sandbox</module>
 	</modules>
 </project>

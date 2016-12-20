@@ -14,9 +14,9 @@
 			<PatternLayout
 				pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n" />
 		</Console>
-
-		<RollingFile name="fileapi" fileName="${logpath}/statistics.log"
-			filePattern="${logpath}/statistics-%d{yyyy-MM-dd-HH}.log">
+		
+		<RollingFile name="fileapi" fileName="${logpath}/active.log"
+			filePattern="${logpath}/avtive-%d{yyyy-MM-dd-HH}.log">
 			<PatternLayout
 				pattern="%replace{%d{yyyy-MM-dd HH:mm:ss.SSS}|${hostName}|%-4level{lowerCase=true}|%t|%C|%M|%msg%n}{^\s+}{}">
 			</PatternLayout>
@@ -29,7 +29,7 @@
 	<loggers>
 		<!--我们只让这个logger输出dubug信息，其他的都是info级别 -->
 		<!-- additivity默认为true，由于这个logger也是满足root的，所以会被打印两遍。additivity=“false”可以避免父级遗传,只打印一遍 -->
-		<logger name="com.vela.iot.statistics" level="debug"
+		<logger name="com.vela.iot.active.netty" level="debug"
 			additivity="false">
 			<appender-ref ref="fileapi" />
 			<appender-ref ref="Console" />

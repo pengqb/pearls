@@ -7,10 +7,10 @@
 		<version>${pearls.version}</version>
 	</parent>
 	<groupId>com.vela.iot</groupId>
-	<artifactId>active</artifactId>
+	<artifactId>auth</artifactId>
 	<packaging>jar</packaging>
 
-	<name>active</name>
+	<name>auth</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
@@ -19,5 +19,175 @@
 			<artifactId>netty-all</artifactId>
 			<version>4.1.6.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>io.dropwizard</groupId>
+			<artifactId>dropwizard-core</artifactId>
+			<version>${dropwizard.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jetty-util</artifactId>
+					<groupId>org.eclipse.jetty</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.alpn</groupId>
+			<artifactId>alpn-api</artifactId>
+			<version>1.1.3.v20160715</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-alpn-server</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.http2</groupId>
+			<artifactId>http2-server</artifactId>
+			<version>${jetty.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jetty-util</artifactId>
+					<groupId>org.eclipse.jetty</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.http2</groupId>
+			<artifactId>http2-client</artifactId>
+			<version>${jetty.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-client</artifactId>
+			<version>${jetty.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>jetty-util</artifactId>
+					<groupId>org.eclipse.jetty</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty.http2</groupId>
+			<artifactId>http2-http-client-transport</artifactId>
+			<version>${jetty.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.dropwizard</groupId>
+			<artifactId>dropwizard-testing</artifactId>
+			<version>${dropwizard.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty.alpn</groupId>
+			<artifactId>alpn-boot</artifactId>
+			<version>${alpn-boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+
+	<!-- Profiles for selecting the correct version of alpn-boot for each JDK. 
+		see http://www.eclipse.org/jetty/documentation/current/alpn-chapter.html 
+		for reference. -->
+	<profiles>
+		<profile>
+			<id>jdk-1.8.0_20</id>
+			<activation>
+				<property>
+					<name>java.version</name>
+					<value>1.8.0_20</value>
+				</property>
+			</activation>
+			<properties>
+				<alpn-boot.version>8.1.0.v20141016</alpn-boot.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk-1.8.0_91</id>
+			<activation>
+				<property>
+					<name>java.version</name>
+					<value>1.8.0_91</value>
+				</property>
+			</activation>
+			<properties>
+				<alpn-boot.version>8.1.7.v20160121</alpn-boot.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk-1.8.0_92</id>
+			<activation>
+				<property>
+					<name>java.version</name>
+					<value>1.8.0_92</value>
+				</property>
+			</activation>
+			<properties>
+				<alpn-boot.version>8.1.8.v20160420</alpn-boot.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk-1.8.0_101</id>
+			<activation>
+				<property>
+					<name>java.version</name>
+					<value>1.8.0_101</value>
+				</property>
+			</activation>
+			<properties>
+				<alpn-boot.version>8.1.9.v20160720</alpn-boot.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk-1.8.0_102</id>
+			<activation>
+				<property>
+					<name>java.version</name>
+					<value>1.8.0_102</value>
+				</property>
+			</activation>
+			<properties>
+				<alpn-boot.version>8.1.9.v20160720</alpn-boot.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk-1.8.0_111</id>
+			<activation>
+				<property>
+					<name>java.version</name>
+					<value>1.8.0_111</value>
+				</property>
+			</activation>
+			<properties>
+				<alpn-boot.version>8.1.9.v20160720</alpn-boot.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk-1.8.0_112</id>
+			<activation>
+				<property>
+					<name>java.version</name>
+					<value>1.8.0_112</value>
+				</property>
+			</activation>
+			<properties>
+				<alpn-boot.version>8.1.10.v20161026</alpn-boot.version>
+			</properties>
+		</profile>
+	</profiles>
 </project>

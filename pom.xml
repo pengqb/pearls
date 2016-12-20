@@ -23,7 +23,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
 		<pearls.version>0.0.1-SNAPSHOT</pearls.version>
-		<dropwizard.version>0.8.2</dropwizard.version>
+		<dropwizard.version>1.0.5</dropwizard.version>
 		<hadoop.version>2.7.1</hadoop.version>
 		<spark.version>2.0.2</spark.version>
 		<fnlp-core.version>2.0-SNAPSHOT</fnlp-core.version>
@@ -43,6 +43,7 @@
 		<slf4j.version>1.7.21</slf4j.version>
 		<shade.version>2.4.1</shade.version>
 		<jar.version>2.4</jar.version>
+		<jetty.version>9.4.0.v20161208</jetty.version>
 
 	</properties>
 
