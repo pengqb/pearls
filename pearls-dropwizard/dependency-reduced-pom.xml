@@ -3,7 +3,7 @@
   <parent>
     <artifactId>pearls</artifactId>
     <groupId>com.hundsun.hsccbp</groupId>
-    <version>${pearls.version}</version>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>pearls-dropwizard</artifactId>

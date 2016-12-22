@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.hundsun.hsccbp</groupId>
 		<artifactId>pearls</artifactId>
-		<version>${pearls.version}</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.vela</groupId>
 	<artifactId>pearls-iot</artifactId>
@@ -18,7 +18,6 @@
 		<module>common</module>
 		<module>device</module>
 		<module>user</module>
-		<module>rules</module>
 		<module>sandbox</module>
 	</modules>
 </project>

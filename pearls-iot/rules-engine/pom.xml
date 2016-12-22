@@ -9,7 +9,7 @@
   <groupId>com.vela.iot</groupId>
   <artifactId>rules-engine</artifactId>
   <packaging>jar</packaging>
-  <name>common</name>
+  <name>rulesengine</name>
   <url>http://maven.apache.org</url>
 
   <properties>

@@ -4,12 +4,12 @@
 <parent>
 		<groupId>com.vela</groupId>
 		<artifactId>pearls-iot</artifactId>
-		<version>${pearls.version}</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
   <groupId>com.vela.iot</groupId>
   <artifactId>rules</artifactId>
   <packaging>jar</packaging>
-  <name>common</name>
+  <name>rules</name>
   <url>http://maven.apache.org</url>
 
   <properties>
