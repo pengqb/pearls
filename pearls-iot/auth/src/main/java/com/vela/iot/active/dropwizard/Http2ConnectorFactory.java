@@ -1,12 +1,11 @@
 package com.vela.iot.active.dropwizard;
 
-import com.codahale.metrics.MetricRegistry;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.google.common.collect.ImmutableList;
 import io.dropwizard.jetty.HttpsConnectorFactory;
 import io.dropwizard.jetty.Jetty93InstrumentedConnectionFactory;
-import io.dropwizard.jetty.SslReload;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
 import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
 import org.eclipse.jetty.server.Connector;
@@ -19,8 +18,10 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler;
 import org.eclipse.jetty.util.thread.ThreadPool;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import com.codahale.metrics.MetricRegistry;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Builds HTTP/2 over TLS (h2) connectors.
@@ -109,10 +110,9 @@ public class Http2ConnectorFactory extends HttpsConnectorFactory {
         final NegotiatingServerConnectionFactory alpn = new ALPNServerConnectionFactory(H2, H2_17);
         alpn.setDefaultProtocol(HTTP_1_1); // Speak HTTP 1.1 over TLS if negotiation fails
 
-        final SslContextFactory sslContextFactory = configureSslContextFactory(new SslContextFactory());
+        final SslContextFactory sslContextFactory = buildSslContextFactory();
         sslContextFactory.addLifeCycleListener(logSslInfoOnStart(sslContextFactory));
         server.addBean(sslContextFactory);
-        server.addBean(new SslReload(sslContextFactory, this::configureSslContextFactory));
 
         // We should use ALPN as a negotiation protocol. Old clients that don't support it will be served
         // via HTTPS. New clients, however, that want to use HTTP/2 will use TLS with ALPN extension.

@@ -24,7 +24,7 @@
 		<fnlp-core.version>2.0-SNAPSHOT</fnlp-core.version>
 		<trove4j.version>3.0.3</trove4j.version>
 		<commons-cli.version>1.2</commons-cli.version>
-		<netty.version>5.0.0.Alpha1</netty.version>
+		<netty.version>4.1.6.Final</netty.version>
 		<fnlp.version>2.0-SNAPSHOT</fnlp.version>
 		<joda.version>2.6</joda.version>
 		<fastjson.version>1.2.16</fastjson.version>
@@ -39,6 +39,10 @@
 		<shade.version>2.4.1</shade.version>
 		<jar.version>2.4</jar.version>
 		<jetty.version>9.3.14.v20161028</jetty.version>
+		<h2.version>1.4.192</h2.version>
+		<jersey.version>2.24</jersey.version>
+		<resteasy.version>3.0.19.Final</resteasy.version>
+		<spring.version>3.2.18.RELEASE</spring.version>
 	</properties>
 	<dependencies>
 		<dependency>
