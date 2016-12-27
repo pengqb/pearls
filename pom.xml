@@ -43,6 +43,7 @@
 		<jersey.version>2.24</jersey.version>
 		<resteasy.version>3.0.19.Final</resteasy.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
+		<disruptor.version>3.3.6</disruptor.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -70,6 +71,11 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>${disruptor.version}</version>
 		</dependency>
 	</dependencies>
 

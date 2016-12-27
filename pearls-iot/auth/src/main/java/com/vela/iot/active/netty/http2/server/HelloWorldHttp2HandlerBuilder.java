@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package com.vela.iot.active.netty.server;
+package com.vela.iot.active.netty.http2.server;
 
 import io.netty.handler.codec.http2.AbstractHttp2ConnectionHandlerBuilder;
 import io.netty.handler.codec.http2.Http2ConnectionDecoder;

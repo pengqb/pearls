@@ -13,7 +13,7 @@
  * the License.
  */
 
-package com.vela.iot.active.netty.server;
+package com.vela.iot.active.netty.http2.server;
 
 import static io.netty.buffer.Unpooled.copiedBuffer;
 import static io.netty.buffer.Unpooled.unreleasableBuffer;

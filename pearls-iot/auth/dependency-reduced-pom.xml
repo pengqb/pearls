@@ -26,7 +26,7 @@
               <transformers>
                 <transformer />
                 <transformer>
-                  <mainClass>com.vela.iot.auth.dropwizard.AuthApplication</mainClass>
+                  <mainClass>com.vela.iot.active.netty.http.HttpServer</mainClass>
                 </transformer>
               </transformers>
             </configuration>

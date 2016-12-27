@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出。 -->
 <!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数。 -->
+<!-- Don't forget to set system property -DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector 
+	to make all loggers asynchronous. -->
 <configuration status="error" monitorInterval="30">
 	<Properties>
 		<!-- ${sys:catalina.home}/logs -->
-		<Property name="logpath">/var/logs</Property>
+		<Property name="logpath">/var/log</Property>
 	</Properties>
 	<appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
-			<ThresholdFilter level="debug" onMatch="ACCEPT"
+			<ThresholdFilter level="INFO" onMatch="ACCEPT"
 				onMismatch="DENY" />
 			<PatternLayout
 				pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n" />
 		</Console>
-		
+
 		<RollingFile name="fileapi" fileName="${logpath}/active.log"
-			filePattern="${logpath}/avtive-%d{yyyy-MM-dd-HH}.log">
+			filePattern="${logpath}/active-%d{yyyy-MM-dd-HH}.log">
 			<PatternLayout
 				pattern="%replace{%d{yyyy-MM-dd HH:mm:ss.SSS}|${hostName}|%-4level{lowerCase=true}|%t|%C|%M|%msg%n}{^\s+}{}">
 			</PatternLayout>
@@ -25,18 +27,28 @@
 					interval="1" />
 			</Policies>
 		</RollingFile>
+
+		<!-- Async Loggers will auto-flush in batches, so switch off immediateFlush. -->
+		<RandomAccessFile name="RandomAccessFile" fileName="${logpath}/async.log"
+			immediateFlush="false" append="false" filePattern="${logpath}/async-%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout>
+				<Pattern>%d ${hostName} %p %c{1.} [%t] %m %ex%n</Pattern>
+			</PatternLayout>
+		</RandomAccessFile>
 	</appenders>
 	<loggers>
 		<!--我们只让这个logger输出dubug信息，其他的都是info级别 -->
 		<!-- additivity默认为true，由于这个logger也是满足root的，所以会被打印两遍。additivity=“false”可以避免父级遗传,只打印一遍 -->
-		<logger name="com.vela.iot.active.netty" level="debug"
+		<logger name="com.vela.iot.active.netty" level="INFO"
 			additivity="false">
-			<appender-ref ref="fileapi" />
-			<appender-ref ref="Console" />
+			<!-- <appender-ref ref="fileapi" />
+			<appender-ref ref="Console" /> -->
+			<AppenderRef ref="RandomAccessFile" />
 		</logger>
-		<root level="info" additivity="false">
-			<appender-ref ref="fileapi" />
-			<appender-ref ref="Console" />
+		<root level="INFO" includeLocation="false" additivity="false">
+			<!--<appender-ref ref="fileapi" />
+			<appender-ref ref="Console" /> -->
+			<AppenderRef ref="RandomAccessFile" />
 		</root>
 	</loggers>
 </configuration>

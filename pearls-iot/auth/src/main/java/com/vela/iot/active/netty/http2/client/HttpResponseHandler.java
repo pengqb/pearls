@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vela.iot.active.netty.client;
+package com.vela.iot.active.netty.http2.client;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;

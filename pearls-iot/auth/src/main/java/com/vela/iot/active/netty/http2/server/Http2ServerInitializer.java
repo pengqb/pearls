@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package com.vela.iot.active.netty.server;
+package com.vela.iot.active.netty.http2.server;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

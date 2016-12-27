@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package com.vela.iot.active.netty.server;
+package com.vela.iot.active.netty.http2.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
