@@ -13,10 +13,10 @@ import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.*;
 
 public class HttpServerHandler extends ChannelInboundHandlerAdapter {
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(HttpServerHandler.class);
-	private static final byte[] CONTENT = { 'H', 'e', 'l', 'l', 'o', ' ', 'W',
-			'o', 'r', 'l', 'd' };
+	private static final byte[] CONTENT = "{\"pt\":\"fZud4fM6SUuvvvBoFyGNYw\",\"at\":\"fI8LLGb7QaOZw6wgYInDrQ\"}"
+			.getBytes();
 
 	private static final AsciiString CONTENT_TYPE = new AsciiString(
 			"Content-Type");
@@ -34,19 +34,18 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		if (msg instanceof HttpRequest) {
 			HttpRequest req = (HttpRequest) msg;
-			logger.info("rep={}", req);
+			LOGGER.info("rep={}", req);
 			if (HttpUtil.is100ContinueExpected(req)) {
 				ctx.write(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
 			}
 			boolean keepAlive = HttpUtil.isKeepAlive(req);
 			FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1,
 					OK, Unpooled.wrappedBuffer(CONTENT));
-			if (req.method() == HttpMethod.GET) {
+			if (req.method() == HttpMethod.GET || req.method() == HttpMethod.POST) {
 				response.headers().set(CONTENT_TYPE, "text/plain");
 				response.headers().setInt(CONTENT_LENGTH,
 						response.content().readableBytes());
 			}
-
 			if (!keepAlive) {
 				ctx.write(response).addListener(ChannelFutureListener.CLOSE);
 			} else {

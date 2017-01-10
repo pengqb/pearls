@@ -14,7 +14,8 @@
 		<module>pearls-dropwizard</module>
 		<module>pearls-hadoop</module>
 		<module>pearls-iot</module>
-		<!-- <module>pearls-nlp</module> <module>pearls-client</module> <module>pearls-kata</module> -->
+		<module>pearls-kata</module>
+		<!-- <module>pearls-nlp</module> <module>pearls-client</module>  -->
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,6 +45,8 @@
 		<resteasy.version>3.0.19.Final</resteasy.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
 		<disruptor.version>3.3.6</disruptor.version>
+		<snakeyaml.version>1.1.7</snakeyaml.version>
+		<californium.version>1.0.4</californium.version>
 	</properties>
 	<dependencies>
 		<dependency>

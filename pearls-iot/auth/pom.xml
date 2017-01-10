@@ -159,10 +159,20 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.californium</groupId>
+			<artifactId>californium-core</artifactId>
+			<version>${californium.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.californium</groupId>
+			<artifactId>scandium</artifactId>
+			<version>${californium.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -200,8 +210,11 @@
 									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<!-- <mainClass>com.vela.iot.auth.dropwizard.AuthApplication</mainClass> -->
-									<mainClass>com.vela.iot.active.netty.http.HttpServer</mainClass>
+									<!-- <mainClass>com.vela.iot.auth.dropwizard.AuthApplication</mainClass> 
+										<mainClass>com.vela.iot.active.netty.http.HttpServer</mainClass> 
+									<mainClass>com.vela.iot.active.netty.http2.server.Http2Server</mainClass>
+									<mainClass>com.vela.iot.active.netty.coap.CoAPServer</mainClass> -->
+									<mainClass>com.vela.iot.active.netty.coap.NativeJavaClient</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

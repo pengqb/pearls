@@ -1,0 +1,61 @@
+server:
+#  softNofileLimit: 1000
+#  hardNofileLimit: 1000
+  applicationContextPath: /auth
+  applicationConnectors:
+    - type: http
+      port: 8080
+    - type: https
+      port: 8443
+      keyStorePath: C:\Users\pengqb\git\pearls\pearls-iot\auth\target\classes\example.keystore
+      keyStorePassword: example
+      validateCerts: false
+      validatePeers: false
+    #this requires the alpn-boot library on the JVM's boot classpath
+    #- type: h2
+    #  port: 8445
+    #  keyStorePath: example.keystore
+    #  keyStorePassword: example
+    #  validateCerts: false
+    #  validatePeers: false
+  adminContextPath: /admin
+  adminConnectors:
+    - type: http
+      port: 8081
+    - type: https
+      port: 8444
+      keyStorePath: C:\Users\pengqb\git\pearls\pearls-iot\auth\target\classes\example.keystore
+      keyStorePassword: example
+      validateCerts: false
+      validatePeers: false
+      
+# Logging settings.
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: DEBUG
+
+  # Logger-specific levels.
+  loggers:
+
+    # Sets the level for 'com.vela.iot.auth' to DEBUG.
+    com.vela.iot.auth: ERROR
+
+    # Redirects SQL logs to a separate file
+    org.hibernate.SQL:
+      level: ERROR
+
+# Logback's Time Based Rolling Policy - archivedLogFilenamePattern: /tmp/auth-%d{yyyy-MM-dd}.log.gz
+# Logback's Size and Time Based Rolling Policy -  archivedLogFilenamePattern: /tmp/auth-%d{yyyy-MM-dd}-%i.log.gz
+# Logback's Fixed Window Rolling Policy -  archivedLogFilenamePattern: /tmp/auth-%i.log.gz
+
+  appenders:
+    - type: console
+    - type: file
+      threshold: ERROR
+      logFormat: "%-6level [%d{HH:mm:ss.SSS}] [%t] %logger{5} - %X{code} %msg %n"
+      currentLogFilename: /var/logs/auth.log
+      archivedLogFilenamePattern: /var/logs/auth-%d{yyyy-MM-dd}-%i.log.gz
+      archivedFileCount: 7
+      timeZone: UTC
+      maxFileSize: 10MB

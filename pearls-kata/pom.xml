@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.hundsun.hsccbp</groupId>
 		<artifactId>pearls</artifactId>
-		<version>${pearls.version}</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>pearls-kata</artifactId>

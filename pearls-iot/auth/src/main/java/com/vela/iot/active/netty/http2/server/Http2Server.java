@@ -18,10 +18,16 @@ package com.vela.iot.active.netty.http2.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http2.Http2Codec;
 import io.netty.handler.codec.http2.Http2SecurityUtil;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
@@ -44,10 +50,12 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 public final class Http2Server {
 
 	//static final boolean SSL = System.getProperty("ssl") != null;
-	static final boolean SSL = true;
+	static final boolean SSL = false;
 
 	static final int PORT = Integer.parseInt(System.getProperty("port",
 			SSL ? "8443" : "8080"));
+	static final String HOST = "0.0.0.0";
+	
 
 	public static void main(String[] args) throws Exception {
 		// Configure SSL.
@@ -83,16 +91,28 @@ public final class Http2Server {
 			sslCtx = null;
 		}
 		// Configure the server.
-		EventLoopGroup group = new NioEventLoopGroup();
+		EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+		EventLoopGroup workerGroup = new NioEventLoopGroup(7);
 		try {
+			LastInboundHandler serverLastInboundHandler = new SharableLastInboundHandler();
 			ServerBootstrap b = new ServerBootstrap();
 			// BACKLOG用于构造服务端套接字ServerSocket对象，标识当服务器请求处理线程全满时，用于临时存放已完成三次握手的请求的队列的最大长度。如果未设置或所设置的值小于1，Java将使用默认值50。
 			b.option(ChannelOption.SO_BACKLOG, 1024);
-			b.group(group).channel(NioServerSocketChannel.class)
+			b.group(bossGroup,workerGroup).channel(NioServerSocketChannel.class)
 					.handler(new LoggingHandler(LogLevel.INFO))
-					.childHandler(new Http2ServerInitializer(sslCtx));
+					.childHandler(new ChannelInitializer<SocketChannel>() {
 
-			Channel ch = b.bind(PORT).sync().channel();
+						@Override
+						protected void initChannel(SocketChannel ch)
+								throws Exception {
+							ChannelPipeline p = ch.pipeline();
+							p.addLast(new Http2Codec(true,serverLastInboundHandler));
+							//p.addLast(new HttpContentCompressor(1));
+							p.addLast(new HelloWorldHttp2HandlerBuilder().build());
+						}
+					});
+
+			Channel ch = b.bind(HOST,PORT).sync().channel();
 
 			System.err
 					.println("Open your HTTP/2-enabled web browser and navigate to "
@@ -103,7 +123,21 @@ public final class Http2Server {
 
 			ch.closeFuture().sync();
 		} finally {
-			group.shutdownGracefully();
+			bossGroup.shutdownGracefully();
+			workerGroup.shutdownGracefully();
 		}
 	}
+	
+	@Sharable
+    private static class SharableLastInboundHandler extends LastInboundHandler {
+        @Override
+        public void channelActive(ChannelHandlerContext ctx) throws Exception {
+            ctx.fireChannelActive();
+        }
+
+        @Override
+        public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+            ctx.fireChannelInactive();
+        }
+    }
 }
