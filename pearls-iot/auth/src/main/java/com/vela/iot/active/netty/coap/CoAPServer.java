@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class CoAPServer {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CoAPServer.class);
-	public static BlockingQueue<ContextMsg> bq= new ArrayBlockingQueue<>(10240);
+	public static BlockingQueue<String> bq= new ArrayBlockingQueue<>(10240);
 	
 	public static void main(String[] args) {
 		String host = "0.0.0.0";

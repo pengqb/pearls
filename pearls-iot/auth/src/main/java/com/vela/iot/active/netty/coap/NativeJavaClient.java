@@ -24,7 +24,7 @@ public class NativeJavaClient implements Runnable {
 			.getBytes();
 //	private static byte[] sendBuf = "devSn=wZud4fM6SUuvvvBoFyGNYw&devKey=8I8LLGb7QaOZw6wgYInDrQ&devInfo=1123899"
 //			.getBytes();
-	private static String SERVER_HOST = "192.168.3.234";
+	private static String SERVER_HOST = "192.168.18.138";
 	private static int SERVER_PORT = 5683;
 	private static final NativeJavaClient nc = new NativeJavaClient();
 

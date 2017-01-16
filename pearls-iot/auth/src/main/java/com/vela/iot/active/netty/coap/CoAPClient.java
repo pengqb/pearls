@@ -55,7 +55,7 @@ public final class CoAPClient {
 					.option(ChannelOption.SO_SNDBUF, 65535)
 					.handler(new CoAPClientHandler());
 			Channel ch = b.bind(0).sync().channel();
-			InetSocketAddress add = new InetSocketAddress("192.168.1.107", PORT);
+			InetSocketAddress add = new InetSocketAddress("192.168.18.138", PORT);
 			long start = System.nanoTime();
 			ch.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer("start",
 					CharsetUtil.UTF_8), add));			
@@ -63,13 +63,7 @@ public final class CoAPClient {
 				ch.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(
 						"active?devSn=wZud4fM6SUuvvvBoFyGNYw&devKey=8I8LLGb7QaOZw6wgYInDrQ&devInfo="
 								+ i, CharsetUtil.UTF_8), add));
-				Thread.sleep(0, 1000);
-				// QuoteOfTheMomentClientHandler will close the DatagramChannel
-				// when a
-				// response is received. If the channel is not closed within 5
-				// seconds,
-				// print an error message and quit.
-				
+				Thread.sleep(0, 100);
 			}
 			ch.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer("end",
 					CharsetUtil.UTF_8), add));
