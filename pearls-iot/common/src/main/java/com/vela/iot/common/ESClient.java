@@ -1,4 +1,4 @@
-package com.vela.iot.statistics;
+package com.vela.iot.common;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -27,7 +27,7 @@ public class ESClient {
 	static Logger log = LoggerFactory.getLogger(ESClient.class);
 	public static TransportClient client;
 	public static BulkProcessor bulkProcessor;
-	private final static int COUNT = 100000;
+
 	public static void init() {
 		String host = "127.0.0.1";
 		Integer port = 9300;
@@ -38,46 +38,42 @@ public class ESClient {
 					.addTransportAddress(new InetSocketTransportAddress(
 							address, port));
 		} catch (UnknownHostException e) {
-			log.error("初始化ElasticSearch报错："+ e.getMessage(), e);
+			log.error("初始化ElasticSearch报错：" + e.getMessage(), e);
 		}
-		
-		bulkProcessor = BulkProcessor.builder(
-		        client,  
-		        new BulkProcessor.Listener() {
-		            @Override
-		            public void beforeBulk(long executionId,
-		                                   BulkRequest request) {
-		            	log.debug("bulk request num :{}",request.numberOfActions());
-		            } 
 
-		            @Override
-		            public void afterBulk(long executionId,
-		                                  BulkRequest request,
-		                                  BulkResponse response) {
-		            	if(response.hasFailures()){
-		            		log.error("请求部分返回错误：{}", response.buildFailureMessage());
-		            	}
-		            } 
+		bulkProcessor = BulkProcessor
+				.builder(client, new BulkProcessor.Listener() {
+					@Override
+					public void beforeBulk(long executionId, BulkRequest request) {
+						log.debug("bulk request num :{}",
+								request.numberOfActions());
+					}
 
-		            @Override
-		            public void afterBulk(long executionId,
-		                                  BulkRequest request,
-		                                  Throwable failure) {
-		            	log.error("请求发生错误："+failure.getMessage(), failure);
-		            } 
-		        })
-		        .setBulkActions(2000) 
-		        .setBulkSize(new ByteSizeValue(10, ByteSizeUnit.MB)) 
-		        .setFlushInterval(TimeValue.timeValueMillis(200)) 
-		        .setConcurrentRequests(0) 
-		        .setBackoffPolicy(BackoffPolicy.noBackoff())
-		        .build();
+					@Override
+					public void afterBulk(long executionId,
+							BulkRequest request, BulkResponse response) {
+						if (response.hasFailures()) {
+							log.error("请求部分返回错误：{}",
+									response.buildFailureMessage());
+						}
+					}
+
+					@Override
+					public void afterBulk(long executionId,
+							BulkRequest request, Throwable failure) {
+						log.error("请求发生错误：" + failure.getMessage(), failure);
+					}
+				}).setBulkActions(2000)
+				.setBulkSize(new ByteSizeValue(10, ByteSizeUnit.MB))
+				.setFlushInterval(TimeValue.timeValueMillis(200))
+				.setConcurrentRequests(0)
+				.setBackoffPolicy(BackoffPolicy.noBackoff()).build();
 	}
-	
+
 	public static void close() throws IOException {
 		client.close();
 	}
-	
+
 	public static void insertDocument() {
 		try {
 			IndexResponse response = client
@@ -92,57 +88,49 @@ public class ESClient {
 		}
 	}
 
-	public static void syncUpdateDocument() {
+	public static void syncUpdateDocument(int hashcode) {
 		UpdateRequest updateRequest = new UpdateRequest();
 		updateRequest.index("iot");
 		updateRequest.type("gw");
 		updateRequest.id("1");
 		try {
 			updateRequest.doc(XContentFactory.jsonBuilder().startObject()
-					.field("method", "active1").field("hashcode","112255").endObject());
-			long start = System.nanoTime();
-			for (int j = 0; j < COUNT; j++) {
-				client.update(updateRequest).get();
-			}
-			System.out.println("sync transport for " + COUNT + " took:" + (System.nanoTime()-start));
+					.field("method", "activesync").field("hashcode", hashcode)
+					.endObject());
+			client.update(updateRequest).get();
 		} catch (IOException | ExecutionException | InterruptedException e) {
 			log.error("error:", e);
 		}
 	}
-	
-	public static void asyncUpdateDocument() {
+
+	public static void asyncUpdateDocument(int hashcode) {
 		UpdateRequest updateRequest = new UpdateRequest();
 		updateRequest.index("iot");
 		updateRequest.type("gw");
 		updateRequest.id("1");
 		try {
 			updateRequest.doc(XContentFactory.jsonBuilder().startObject()
-					.field("method", "active1").field("hashcode","112255").endObject());
-			long start = System.nanoTime();
-			for (int j = 0; j < COUNT; j++) {
-				client.update(updateRequest);
-			}
-			System.out.println("async transport for " + COUNT + " took:" + (System.nanoTime()-start));
+					.field("method", "activeasync").field("hashcode", hashcode)
+					.endObject());
+			client.update(updateRequest);
 		} catch (IOException e) {
 			log.error("error:", e);
 		}
 	}
-	
-	public static void bulkUpdateDocument() {
+
+	public static void bulkUpdateDocument(int hashcode) {
 		UpdateRequest updateRequest = new UpdateRequest();
 		updateRequest.index("iot");
 		updateRequest.type("gw");
 		updateRequest.id("1");
 		try {
 			updateRequest.doc(XContentFactory.jsonBuilder().startObject()
-					.field("method", "active1").field("hashcode","112255").endObject());
-			long start = System.nanoTime();
-			for (int j = 0; j < COUNT; j++) {
-				bulkProcessor.add(updateRequest);
-			}
+					.field("method", "activeasyncbulk").field("hashcode", hashcode)
+					.endObject());
+			bulkProcessor.add(updateRequest);
+
 			// Flush any remaining requests
 			bulkProcessor.flush();
-			System.out.println("bulk transport for " + COUNT + " took:" + (System.nanoTime()-start));
 		} catch (IOException e) {
 			log.error("error:", e);
 		}
@@ -156,9 +144,9 @@ public class ESClient {
 	public static void main(String[] args) {
 		ESClient.init();
 		try {
-			ESClient.syncUpdateDocument();
-			//ESClient.asyncUpdateDocument();
-			//ESClient.bulkUpdateDocument();
+			ESClient.syncUpdateDocument(112233);
+			// ESClient.asyncUpdateDocument();
+			// ESClient.bulkUpdateDocument();
 			ESClient.close();
 		} catch (IOException e) {
 			e.printStackTrace();

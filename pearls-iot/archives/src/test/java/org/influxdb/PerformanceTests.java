@@ -18,7 +18,7 @@ public class PerformanceTests {
 	private InfluxDB influxDB;
 	private final static int COUNT = 1;
 	private final static int POINT_COUNT = 100000;
-	private final static int SINGLE_POINT_COUNT = 10000;
+	private final static int SINGLE_POINT_COUNT = 100000;
 	
 	private final static int UDP_PORT = 8089;
 	private final static String UDP_DATABASE = "udp";
@@ -37,7 +37,7 @@ public class PerformanceTests {
 	public void clearup(){
 		this.influxDB.deleteDatabase(UDP_DATABASE);
 	}
-
+	@Ignore
 	@Test
 	public void writeSinglePointPerformance() {
 		String dbName = "write_" + System.currentTimeMillis();
@@ -66,7 +66,6 @@ public class PerformanceTests {
 
 		Stopwatch watch = Stopwatch.createStarted();
 		for (int i = 0; i < COUNT; i++) {
-
 			BatchPoints batchPoints = BatchPoints
 					.database(dbName)
 					.tag("blubber", "bla")
@@ -88,7 +87,7 @@ public class PerformanceTests {
 		this.influxDB.deleteDatabase(dbName);
 	}
 
-	@Ignore
+	
 	@Test
 	public void maxWritePointsPerformance() {
 		String dbName = "d";

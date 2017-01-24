@@ -2,6 +2,7 @@ server:
   contextPath: /auth
   connectors:
     - type: http
+      host: 0.0.0.0
       port: 8080
     - type: https
       port: 8443
@@ -12,8 +13,27 @@ server:
     - type: coap
       port: 5683
     - type: coaps
-      port: 5683
+      port: 5684
     - type: mqtt
       port: 1883
     - type: mqtts
       port: 1884
+redis:
+  host: 192.168.0.4
+  port: 6379
+  password: vane123
+  maxTotal: 32
+  maxIdle: 16
+  minIdle: 8
+influx:
+  host: 192.168.0.4
+  port: 8086
+mongo:
+  host: 192.168.0.4
+  port: 27017
+  name: iot
+  connections: 1000
+  thread: 10
+es:
+  host: 192.168.0.4
+  port: 9300

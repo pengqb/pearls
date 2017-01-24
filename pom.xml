@@ -47,6 +47,10 @@
 		<disruptor.version>3.3.6</disruptor.version>
 		<snakeyaml.version>1.1.7</snakeyaml.version>
 		<californium.version>1.0.4</californium.version>
+		<jedis.version>2.9.0</jedis.version>
+		<mongodb.version>3.4.1</mongodb.version>
+		<lettuce.version>4.3.0.Final</lettuce.version>
+		<commons-pool2.version>2.4.2</commons-pool2.version>
 	</properties>
 	<dependencies>
 		<dependency>

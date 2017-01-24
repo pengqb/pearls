@@ -34,10 +34,10 @@
 		<!-- additivity默认为true，由于这个logger也是满足root的，所以会被打印两遍。additivity=“false”可以避免父级遗传,只打印一遍 -->
 		<logger name="com.vela.iot.active.netty" level="DEBUG"
 			additivity="false">
-			<appender-ref ref="fileapi" /><appender-ref ref="Console" />
+			<appender-ref ref="fileapi" /><!-- <appender-ref ref="Console" /> -->
 		</logger>
-		<root level="DEBUG" includeLocation="false" additivity="false">
-			<appender-ref ref="fileapi" /><appender-ref ref="Console" />
+		<root level="ERROR" includeLocation="false" additivity="false">
+			<appender-ref ref="fileapi" /><!--<appender-ref ref="Console" /> -->
 		</root>
 	</loggers>
 </configuration>

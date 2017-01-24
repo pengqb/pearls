@@ -21,29 +21,38 @@ public class HttpServer {
 			.getLogger(HttpServer.class);
 
 	public static void main(String[] args) throws Exception {
+		if (args.length > 0) {
+			String funcBitsStr = args[0];
+			for(int i=0;i< funcBitsStr.length();i++){
+				if(funcBitsStr.charAt(i) == '1')
+					ActiveResource.bits.flip(i);
+			}
+		}
+		ActiveConf conf = new ActiveConf();
+		conf.initSystem();
 		String host = "0.0.0.0";
 		int port = 8080;
-		// if (args.length > 0) {
-		// host = args[0];
-		// }
-		// if (args.length > 1) {
-		// port = Integer.parseInt(args[1]);
-		// }
 		int bossCount = 1;
 		int ioWorkerCount = Runtime.getRuntime().availableProcessors() * 2;
 		int executorThreadCount = Runtime.getRuntime().availableProcessors() * 4;
-
-		if (args.length > 0) {
-			bossCount = Integer.parseInt(args[0]);
-		}
-
-		if (args.length > 1) {
-			ioWorkerCount = Integer.parseInt(args[1]);
-		}
-
-		if (args.length > 2) {
-			executorThreadCount = Integer.parseInt(args[2]);
-		}
+		
+		//从高位到低位分别表示:
+		//第一位，是否打印异步日志；第二位是否使用jedis写redis；第三位使用使用Lettuce写redis；第四位是否使用mongodb sync
+		//第五位 是否使用mongodb sync bulk;第六位 是否使用mongodb async; 第七位 是否使用mongodb async bulk
+		//第八位，是否使用influxdb，批量插入; 第九位，是否使用influxdb，udp插入; 第十位是否使用elasticsearch同步更新文档
+		//第十一位是否使用elasticsearch异步更新文档；第十二位是否使用elasticsearch异步批量更新文档
+		
+//		if (args.length > 0) {
+//			bossCount = Integer.parseInt(args[0]);
+//		}
+//
+//		if (args.length > 1) {
+//			ioWorkerCount = Integer.parseInt(args[1]);
+//		}
+//
+//		if (args.length > 2) {
+//			executorThreadCount = Integer.parseInt(args[2]);
+//		}
 
 		LOGGER.info("bossCount:{}", bossCount);
 		LOGGER.info("ioWorkerCount:{}", ioWorkerCount);
@@ -84,4 +93,6 @@ public class HttpServer {
 			workerGroup.shutdownGracefully();
 		}
 	}
+	
+	
 }

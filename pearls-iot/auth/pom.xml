@@ -28,7 +28,7 @@
 			<groupId>io.netty</groupId>
 			<artifactId>netty-codec</artifactId>
 			<version>${netty.version}</version>
-		</dependency>
+		</dependency>  
 		<dependency>
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-core</artifactId>
@@ -211,10 +211,10 @@
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<!-- <mainClass>com.vela.iot.auth.dropwizard.AuthApplication</mainClass> 
-										<mainClass>com.vela.iot.active.netty.http.HttpServer</mainClass> 
+										 <mainClass>com.vela.iot.active.netty.coap.NativeJavaClient</mainClass>
 									<mainClass>com.vela.iot.active.netty.http2.server.Http2Server</mainClass>
 									<mainClass>com.vela.iot.active.netty.coap.CoAPServer</mainClass> -->
-									<mainClass>com.vela.iot.active.netty.coap.NativeJavaClient</mainClass>
+									<mainClass>com.vela.iot.active.netty.http.HttpServer</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

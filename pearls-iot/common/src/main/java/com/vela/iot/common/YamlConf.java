@@ -1,9 +1,8 @@
 package com.vela.iot.common;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.HashMap;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,20 +14,21 @@ public class YamlConf {
 	private YamlConf() {
 	}
 
-	public YamlConf getInstance() {
+	public static YamlConf getInstance() {
 		if (conf == null) {
 			conf = new YamlConf();
 		}
 		return conf;
 	}
 
-	public Map<String, Object> parse(Optional<String> fileName)
+	public Map<String, Object> parse(String fileName)
 			throws FileNotFoundException {
 		Yaml yaml = new Yaml();
-		URL url = YamlConf.class.getClassLoader().getResource(
-				fileName.orElse("default.yaml"));
+		Optional<String> oFileName = Optional.of(fileName);
+		InputStream is = this.getClass().getClassLoader()
+				.getResourceAsStream(oFileName.orElse("default.yml"));
 		Map<String, Object> map = (Map<String, Object>) yaml
-				.load(new FileInputStream(url.getFile()));
+				.load(new InputStreamReader(is));
 		return map;
 	}
 }
