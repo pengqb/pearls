@@ -30,6 +30,8 @@ import java.net.InetSocketAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vela.iot.active.netty.http.ActiveResource;
+
 /**
  * A UDP broadcast client that asks for a quote of the moment (QOTM) to
  * {@link QuoteOfTheMomentServer}.
@@ -43,10 +45,9 @@ public final class CoAPClient {
 			.getLogger(CoAPClient.class);
 	static final int PORT = Integer
 			.parseInt(System.getProperty("port", "5683"));
-	private static int REQ_NUM = 10000;
+	private static int REQ_NUM = 5000;
 
 	public static void main(String[] args) throws Exception {
-
 		EventLoopGroup group = new NioEventLoopGroup();
 		try {
 			Bootstrap b = new Bootstrap();
@@ -55,7 +56,12 @@ public final class CoAPClient {
 					.option(ChannelOption.SO_SNDBUF, 65535)
 					.handler(new CoAPClientHandler());
 			Channel ch = b.bind(0).sync().channel();
-			InetSocketAddress add = new InetSocketAddress("192.168.18.138", PORT);
+			String ip = "192.168.18.102";
+			if (args.length > 0) {
+				ip = args[0];			
+			}
+			InetSocketAddress add = new InetSocketAddress(ip, PORT);
+			
 			long start = System.nanoTime();
 			ch.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer("start",
 					CharsetUtil.UTF_8), add));			
@@ -67,11 +73,11 @@ public final class CoAPClient {
 			}
 			ch.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer("end",
 					CharsetUtil.UTF_8), add));
+			//LOGGER.info("总请求数:{},消费时间:{}纳秒", REQ_NUM, System.nanoTime() - start);
+			System.out.printf("总请求数:%d,消费时间:%d纳秒", REQ_NUM, System.nanoTime() - start);
 			if (!ch.closeFuture().await(5000)) {
 				System.err.println("QOTM request timed out.");
-			}
-			LOGGER.info("总请求数:{},消费时间:{}纳秒", REQ_NUM, System.nanoTime() - start);
-			
+			}			
 		} finally {
 			group.shutdownGracefully();
 		}

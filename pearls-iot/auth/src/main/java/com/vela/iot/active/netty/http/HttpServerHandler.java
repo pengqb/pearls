@@ -35,7 +35,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof HttpRequest) {
 			HttpRequest req = (HttpRequest) msg;
 			ActiveResource ar = new ActiveResource();
-			ar.activeAction(req);
+			ar.activeAction(req.toString());
 			if (HttpUtil.is100ContinueExpected(req)) {
 				ctx.write(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
 			}

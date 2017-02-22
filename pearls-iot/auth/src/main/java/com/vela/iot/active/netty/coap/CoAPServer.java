@@ -17,36 +17,27 @@ import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vela.iot.active.netty.http.ActiveResource;
+
 public class CoAPServer {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CoAPServer.class);
 	public static BlockingQueue<String> bq= new ArrayBlockingQueue<>(10240);
 	
 	public static void main(String[] args) {
+		if (args.length > 0) {
+			String funcBitsStr = args[0];
+			for(int i=0;i< funcBitsStr.length();i++){
+				if(funcBitsStr.charAt(i) == '1')
+					ActiveResource.bits.flip(i);
+			}
+		}
 		String host = "0.0.0.0";
 		int port = NetworkConfig.getStandard().getInt(
 				NetworkConfig.Keys.COAP_PORT);
-		// if (args.length > 0) {
-		// host = args[0];
-		// }
-		// if (args.length > 1) {
-		// port = Integer.parseInt(args[1]);
-		// }
-		int bossCount = 2;
+		int bossCount = 1;
 		int ioWorkerCount = Runtime.getRuntime().availableProcessors() * 2;
 		int executorThreadCount = Runtime.getRuntime().availableProcessors() * 4;
-
-		if (args.length > 0) {
-			bossCount = Integer.parseInt(args[0]);
-		}
-
-		if (args.length > 1) {
-			ioWorkerCount = Integer.parseInt(args[1]);
-		}
-
-		if (args.length > 2) {
-			executorThreadCount = Integer.parseInt(args[2]);
-		}
 
 		LOGGER.info("bossCount:{}", bossCount);
 		LOGGER.info("ioWorkerCount:{}", ioWorkerCount);
@@ -62,8 +53,8 @@ public class CoAPServer {
 					.option(ChannelOption.SO_SNDBUF, 65535)
 					.handler(new CoAPServerHandler());
 			
-			ExecutorService executorService = Executors.newFixedThreadPool(1);
-			executorService.execute(new MetricHandler());
+			//ExecutorService executorService = Executors.newFixedThreadPool(1);
+			//executorService.execute(new MetricHandler());
 			
 			b.bind(port).sync().channel().closeFuture().await();
 		} catch (InterruptedException e) {

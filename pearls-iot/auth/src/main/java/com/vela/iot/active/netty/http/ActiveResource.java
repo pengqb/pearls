@@ -1,7 +1,5 @@
 package com.vela.iot.active.netty.http;
 
-import io.netty.handler.codec.http.HttpRequest;
-
 import java.util.BitSet;
 
 import org.slf4j.Logger;
@@ -20,9 +18,9 @@ public class ActiveResource {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ActiveResource.class);
 
-	public String activeAction(HttpRequest req) {
+	public String activeAction(String req) {
 		if (ActiveResource.bits.get(0)) {
-			LOGGER.info("rep={}", req);
+			LOGGER.info("req={}", req);
 		}
 		if (ActiveResource.bits.get(1)) {
 			JedisClient redis = JedisClient.getInstance();

@@ -8,6 +8,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,11 +22,11 @@ public class NativeJavaClient implements Runnable {
 	private static int REQ_NUM;
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(NativeJavaClient.class);
-	private static byte[] sendBuf = "hello"
+	private static byte[] sendByte = "hello"
 			.getBytes();
 //	private static byte[] sendBuf = "devSn=wZud4fM6SUuvvvBoFyGNYw&devKey=8I8LLGb7QaOZw6wgYInDrQ&devInfo=1123899"
 //			.getBytes();
-	private static String SERVER_HOST = "192.168.18.138";
+	private static String SERVER_HOST = "192.168.1.105";
 	private static int SERVER_PORT = 5683;
 	private static final NativeJavaClient nc = new NativeJavaClient();
 
@@ -53,7 +55,7 @@ public class NativeJavaClient implements Runnable {
 	private void bio() throws IOException {
 		DatagramSocket client = new DatagramSocket();
 		InetAddress addr = InetAddress.getByName(SERVER_HOST);
-		DatagramPacket sendPacket = new DatagramPacket(sendBuf, sendBuf.length,
+		DatagramPacket sendPacket = new DatagramPacket(sendByte, sendByte.length,
 				addr, SERVER_PORT);
 		long start = System.nanoTime();
 		for (int i = 0; i < REQ_NUM; i++) {
@@ -77,28 +79,77 @@ public class NativeJavaClient implements Runnable {
 		int port = serverSocket.getLocalPort();
 		channel.socket().bind(new InetSocketAddress(port));
 		long start = System.nanoTime();
-		ByteBuffer buf = ByteBuffer.allocate(100);
+		ByteBuffer buf = ByteBuffer.allocate(1024);
 		for (int i = 0; i < REQ_NUM; i++) {
+			long startTime = System.nanoTime();
 			buf.clear();
-			buf.put(sendBuf);
+			buf.put(sendByte);
 			buf.flip();
+			long bufTime = System.nanoTime();
 			int bytesSent = channel.send(buf, new InetSocketAddress(
 					SERVER_HOST, SERVER_PORT));
-
+			long sendTime = System.nanoTime();
 			buf.clear();
 			channel.receive(buf);
+			long recieveTime = System.nanoTime();
 			String recvStr = new String(buf.array(), 0, buf.array().length);
-			//System.out.println("收到:" + recvStr);
+			long endTime = System.nanoTime();
+			System.out.println("收到:" + recvStr);
+			System.out.printf("第%d次调用,bufTime%d,sendTime%d,recieveTime%d,endTime%d\n",
+			i, bufTime - startTime, sendTime
+					- bufTime, recieveTime - sendTime,endTime-recieveTime);
 		}
 		LOGGER.info("port:{},总请求数:{},消费时间:{}纳秒", port,REQ_NUM, System.nanoTime() - start);
 		channel.close();
 		serverSocket.close();
 	}
 
+	private void nio1() throws IOException {
+		DatagramChannel receiveChannel = DatagramChannel.open();
+		receiveChannel.configureBlocking(false);
+		ServerSocket serverSocket = new ServerSocket(0); // 读取空闲的可用端口
+		int port = serverSocket.getLocalPort();
+		receiveChannel.socket().bind(new InetSocketAddress(port));
+		Selector selector = Selector.open();
+		receiveChannel.register(selector, SelectionKey.OP_READ);
+		
+		DatagramChannel sendChannel = DatagramChannel.open();
+		sendChannel.configureBlocking(false);
+		
+		long start = System.nanoTime();
+		ByteBuffer sendBuf = ByteBuffer.allocate(1024);
+		ByteBuffer receiveBuf = ByteBuffer.allocate(1024);
+		for (int i = 0; i < REQ_NUM; i++) {
+			long startTime = System.nanoTime();
+			sendBuf.clear();
+			sendBuf.put(sendByte);
+			sendBuf.flip();
+			long bufTime = System.nanoTime();
+			int bytesSent = sendChannel.send(sendBuf, new InetSocketAddress(
+					SERVER_HOST, SERVER_PORT));
+			long sendTime = System.nanoTime();
+			receiveBuf.clear();
+			receiveChannel.receive(receiveBuf);
+			receiveBuf.flip();
+			long recieveTime = System.nanoTime();
+			String recvStr = new String(receiveBuf.array(), 0, receiveBuf.array().length);
+			long endTime = System.nanoTime();
+			System.out.println("收到:" + recvStr);
+			System.out.printf(
+					"第%d次调用,bufTime%d,sendTime%d,recieveTime%d,endTime%d\n", i,
+					bufTime - startTime, sendTime - bufTime, recieveTime
+							- sendTime, endTime - recieveTime);
+		}
+		LOGGER.info("port:{},总请求数:{},消费时间:{}纳秒", port,REQ_NUM, System.nanoTime() - start);
+		receiveChannel.close();
+		sendChannel.close();
+		serverSocket.close();
+	}
+	
 	@Override
 	public void run() {
 		try {
-			nio();
+			nio1();
 			countDownLatch.countDown();			
 		} catch (IOException e) {
 			e.printStackTrace();

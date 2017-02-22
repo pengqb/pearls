@@ -26,7 +26,7 @@
               <transformers>
                 <transformer />
                 <transformer>
-                  <mainClass>com.vela.iot.active.netty.http.HttpServer</mainClass>
+                  <mainClass>com.vela.iot.active.netty.coap.NativeJavaClient</mainClass>
                 </transformer>
               </transformers>
             </configuration>
