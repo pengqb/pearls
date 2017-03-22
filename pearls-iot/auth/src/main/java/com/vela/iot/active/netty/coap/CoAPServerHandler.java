@@ -65,7 +65,7 @@ public class CoAPServerHandler extends
 //				count.longValue(), bytebufTime - startTime, dpTime
 //						- bytebufTime, writeTime - dpTime);
 
-		if (count.longValue() % 1000 == 0) {
+		if (count.longValue() % 10000 == 0) {
 //			LOGGER.debug("第{}次调用,累计耗时{}", count.longValue(), totalTime);
 			System.out.printf("第%d次调用,累计耗时%d\n", count.longValue(),
 					totalTime.longValue());

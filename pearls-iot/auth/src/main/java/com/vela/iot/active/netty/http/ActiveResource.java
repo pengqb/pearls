@@ -1,6 +1,20 @@
 package com.vela.iot.active.netty.http;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
+import io.swagger.annotations.AuthorizationScope;
+
 import java.util.BitSet;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +26,17 @@ import com.vela.iot.common.JedisClient;
 import com.vela.iot.common.LettuceClient;
 import com.vela.iot.common.MongoDbClient;
 
+@Api(value = "/auth/gw", tags = "gw", protocols = "https", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
 public class ActiveResource {
 	public static BitSet bits = new BitSet(12);
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ActiveResource.class);
 
-	public String activeAction(String req) {
+	@ApiOperation(value = "active", httpMethod="POST")
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "Invalid input")})
+	public String activeAction(
+			@ApiParam(value = "param req of the active", required = true) @FormParam("name") String req) {
 		if (ActiveResource.bits.get(0)) {
 			LOGGER.info("req={}", req);
 		}
@@ -40,7 +58,7 @@ public class ActiveResource {
 		}
 		if (ActiveResource.bits.get(6)) {
 			AsyncMongoDbClient.bulkUpdateData();
-		}		
+		}
 		if (ActiveResource.bits.get(7)) {
 			InfluxClient.bulkUpdate(req.hashCode());
 		}

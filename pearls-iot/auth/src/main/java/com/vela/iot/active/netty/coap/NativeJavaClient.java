@@ -104,52 +104,10 @@ public class NativeJavaClient implements Runnable {
 		serverSocket.close();
 	}
 
-	private void nio1() throws IOException {
-		DatagramChannel receiveChannel = DatagramChannel.open();
-		receiveChannel.configureBlocking(false);
-		ServerSocket serverSocket = new ServerSocket(0); // 读取空闲的可用端口
-		int port = serverSocket.getLocalPort();
-		receiveChannel.socket().bind(new InetSocketAddress(port));
-		Selector selector = Selector.open();
-		receiveChannel.register(selector, SelectionKey.OP_READ);
-		
-		DatagramChannel sendChannel = DatagramChannel.open();
-		sendChannel.configureBlocking(false);
-		
-		long start = System.nanoTime();
-		ByteBuffer sendBuf = ByteBuffer.allocate(1024);
-		ByteBuffer receiveBuf = ByteBuffer.allocate(1024);
-		for (int i = 0; i < REQ_NUM; i++) {
-			long startTime = System.nanoTime();
-			sendBuf.clear();
-			sendBuf.put(sendByte);
-			sendBuf.flip();
-			long bufTime = System.nanoTime();
-			int bytesSent = sendChannel.send(sendBuf, new InetSocketAddress(
-					SERVER_HOST, SERVER_PORT));
-			long sendTime = System.nanoTime();
-			receiveBuf.clear();
-			receiveChannel.receive(receiveBuf);
-			receiveBuf.flip();
-			long recieveTime = System.nanoTime();
-			String recvStr = new String(receiveBuf.array(), 0, receiveBuf.array().length);
-			long endTime = System.nanoTime();
-			System.out.println("收到:" + recvStr);
-			System.out.printf(
-					"第%d次调用,bufTime%d,sendTime%d,recieveTime%d,endTime%d\n", i,
-					bufTime - startTime, sendTime - bufTime, recieveTime
-							- sendTime, endTime - recieveTime);
-		}
-		LOGGER.info("port:{},总请求数:{},消费时间:{}纳秒", port,REQ_NUM, System.nanoTime() - start);
-		receiveChannel.close();
-		sendChannel.close();
-		serverSocket.close();
-	}
-	
 	@Override
 	public void run() {
 		try {
-			nio1();
+			nio();
 			countDownLatch.countDown();			
 		} catch (IOException e) {
 			e.printStackTrace();

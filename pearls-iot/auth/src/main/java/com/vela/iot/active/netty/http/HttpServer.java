@@ -16,6 +16,8 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vela.iot.common.SwaggerAdapter;
+
 public class HttpServer {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(HttpServer.class);
@@ -30,6 +32,10 @@ public class HttpServer {
 		}
 		ActiveConf conf = new ActiveConf();
 		conf.initSystem();
+		
+		SwaggerAdapter swagger = new SwaggerAdapter();
+		swagger.init();
+		
 		String host = "0.0.0.0";
 		int port = 8080;
 		int bossCount = 1;

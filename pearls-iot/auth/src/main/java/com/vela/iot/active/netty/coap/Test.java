@@ -1,11 +1,13 @@
 package com.vela.iot.active.netty.coap;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Test {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException,
+			InstantiationException, IllegalAccessException {
 		// Integer binary = 0b11;
 		// System.out.println(binary);
 		// System.out.println(Integer.toBinaryString(binary));
@@ -31,18 +33,74 @@ public class Test {
 		// System.out.format("处理请求数%d,处理时间%d",count.longValue(),System.nanoTime()
 		// );
 
-		Map<String,Integer> map = new HashMap(); 
-		long startTime = System.nanoTime();
-		for (int i = 0; i < 100; i++) {
-			map.put(String.valueOf(i), i);
+		// Map<String, Integer> map = new HashMap();
+		// long writeStartTime = System.nanoTime();
+		// for (int i = 0; i < 10000; i++) {
+		// map.put(String.valueOf(i), i);
+		// }
+		// long writeEndTime = System.nanoTime();
+		// System.out
+		// .printf("共%d次写入,累计耗时%d\n", 10000, writeEndTime - writeStartTime);
+		// long readStart = System.nanoTime();
+		// for (int i = 0; i < 10000; i++) {
+		// Integer value = map.get(i);
+		// }
+		// long readEnd = System.nanoTime();
+		// System.out.printf("共%d次读,累计耗时%d\n", 10000, readEnd - readStart);
+		//
+		// long newStart = System.nanoTime();
+		// for (int i = 0; i < 10000; i++) {
+		// String string = new String();
+		// }
+		// long newEnd = System.nanoTime();
+		// System.out.printf("共%d次new,累计耗时%d\n", 10000, newEnd - newStart);
+		//
+		// long reflectionStart = System.nanoTime();
+		// for (int i = 0; i < 10000; i++) {
+		// String string = String.class.newInstance();
+		// }
+		// long reflectionEnd = System.nanoTime();
+		// System.out.printf("共%d次反射,累计耗时%d\n", 10000, reflectionEnd -
+		// reflectionStart);
+		//
+		// long timeStart = System.nanoTime();
+		// for (int i = 0; i < 10000; i++) {
+		// System.nanoTime();
+		// }
+		// long timeEnd = System.nanoTime();
+		// System.out.printf("共%d次取时间,累计耗时%d\n", 10000, timeEnd - timeStart);
+
+		List<Integer> arrayList = new ArrayList<Integer>();
+		List<Integer> linkedList = new LinkedList<Integer>();
+
+		for (int i = 0; i < 100000; i++) {
+			arrayList.add(i);
+			linkedList.add(i);
 		}
-		long endTime = System.nanoTime();
-		System.out.printf("共%d次写入,累计耗时%d\n", 100,endTime-startTime);
-		long start = System.nanoTime();
-		for (int i = 0; i < 100; i++) {
-			Integer value = map.get(i);
+
+		long startTime = System.currentTimeMillis();
+		for (int i = 0; i < arrayList.size(); i++) {
+			arrayList.get(i);
 		}
-		long end = System.nanoTime();
-		System.out.printf("共%d次读,累计耗时%d\n", 100,end-start);
+		System.out.println("ArrayList for遍历速度："
+				+ (System.currentTimeMillis() - startTime) + "ms");
+
+		startTime = System.currentTimeMillis();
+		for (Integer integer : arrayList) {
+		}
+		System.out.println("ArrayList foreach遍历速度："
+				+ (System.currentTimeMillis() - startTime) + "ms");
+
+		startTime = System.currentTimeMillis();
+		for (int i = 0; i < linkedList.size(); i++) {
+			linkedList.get(i);
+		}
+		System.out.println("LinkedList for遍历速度："
+				+ (System.currentTimeMillis() - startTime) + "ms");
+		startTime = System.currentTimeMillis();
+		for (Integer integer : linkedList) {
+		}
+		System.out.println("LinkedList foreach遍历速度："
+				+ (System.currentTimeMillis() - startTime) + "ms");
 	}
 }

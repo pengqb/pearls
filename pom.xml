@@ -51,6 +51,7 @@
 		<mongodb.version>3.4.1</mongodb.version>
 		<lettuce.version>4.3.0.Final</lettuce.version>
 		<commons-pool2.version>2.4.2</commons-pool2.version>
+		<swagger.version>1.5.12</swagger.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -83,6 +84,11 @@
 			<groupId>com.lmax</groupId>
 			<artifactId>disruptor</artifactId>
 			<version>${disruptor.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+			<version>${swagger.version}</version>
 		</dependency>
 	</dependencies>
 
