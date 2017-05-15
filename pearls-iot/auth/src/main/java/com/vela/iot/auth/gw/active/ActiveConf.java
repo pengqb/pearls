@@ -1,4 +1,6 @@
-package com.vela.iot.active.netty.http;
+package com.vela.iot.auth.gw.active;
+
+import io.netty.handler.codec.http.multipart.DiskFileUpload;
 
 import java.io.FileNotFoundException;
 import java.net.InetAddress;
@@ -66,6 +68,10 @@ public class ActiveConf {
 					.get("es");
 			initElasticSearch(esConf);
 		}
+		
+		Map<String, Object> file = (Map<String, Object>) confMap.get("file");
+		//上传文件存放根路径
+        DiskFileUpload.baseDirectory =(String)file.get("path");
 	}
 
 	private void initServer(Map<String, Object> redisConf) {

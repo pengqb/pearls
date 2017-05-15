@@ -25,15 +25,10 @@ import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.util.CharsetUtil;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.nio.channels.DatagramChannel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.vela.iot.active.netty.http.ActiveResource;
 
 /**
  * A UDP broadcast client that asks for a quote of the moment (QOTM) to
@@ -85,7 +80,7 @@ public final class CoAPClient {
 					CharsetUtil.UTF_8), add));
 			for (int i = 0; i < REQ_NUM; i++) {
 				ch.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(
-						"active?devSn=wZud4fM6SUuvvvBoFyGNYw&devKey=8I8LLGb7QaOZw6wgYInDrQ&devInfo="
+						"auth/gw/active?devSn=wZud4fM6SUuvvvBoFyGNYw&devKey=8I8LLGb7QaOZw6wgYInDrQ&devInfo="
 								+ i, CharsetUtil.UTF_8), add));
 				if (i % concNum == 0)
 					Thread.sleep(0, 1);

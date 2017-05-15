@@ -36,7 +36,7 @@
 			additivity="false">
 			<appender-ref ref="fileapi" /><appender-ref ref="Console" />
 		</logger>
-		<root level="ERROR" includeLocation="false" additivity="false">
+		<root level="debug" includeLocation="false" additivity="false">
 			<appender-ref ref="fileapi" /><appender-ref ref="Console" />
 		</root>
 	</loggers>

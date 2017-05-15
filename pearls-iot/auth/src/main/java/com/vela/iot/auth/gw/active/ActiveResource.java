@@ -1,33 +1,30 @@
-package com.vela.iot.active.netty.http;
+package com.vela.iot.auth.gw.active;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
-import io.swagger.annotations.AuthorizationScope;
 
 import java.util.BitSet;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vela.iot.common.AResource;
 import com.vela.iot.common.AsyncMongoDbClient;
 import com.vela.iot.common.ESClient;
 import com.vela.iot.common.InfluxClient;
 import com.vela.iot.common.JedisClient;
 import com.vela.iot.common.LettuceClient;
 import com.vela.iot.common.MongoDbClient;
+import com.vela.iot.common.Request;
 
 @Api(value = "/auth/gw", tags = "gw", protocols = "https", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-public class ActiveResource {
+public class ActiveResource extends AResource {
 	public static BitSet bits = new BitSet(12);
 
 	private static final Logger LOGGER = LoggerFactory
@@ -35,10 +32,10 @@ public class ActiveResource {
 
 	@ApiOperation(value = "active", httpMethod="POST")
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Invalid input")})
-	public String activeAction(
-			@ApiParam(value = "param req of the active", required = true) @FormParam("name") String req) {
+	public String execute(
+			@ApiParam(value = "param req of the active", required = true) @FormParam("name") Request req) {
 		if (ActiveResource.bits.get(0)) {
-			LOGGER.info("req={}", req);
+			LOGGER.info("req={}",req);
 		}
 		if (ActiveResource.bits.get(1)) {
 			JedisClient redis = JedisClient.getInstance();

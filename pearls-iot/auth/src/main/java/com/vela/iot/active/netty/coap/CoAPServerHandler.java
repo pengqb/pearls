@@ -7,14 +7,18 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
+import io.netty.handler.codec.http.HttpRequest;
 import io.netty.util.CharsetUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.LongAdder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vela.iot.active.netty.http.ActiveResource;
+import com.vela.iot.auth.gw.active.ActiveResource;
+import com.vela.iot.common.Request;
 
 public class CoAPServerHandler extends
 		SimpleChannelInboundHandler<DatagramPacket> {
@@ -36,8 +40,9 @@ public class CoAPServerHandler extends
 		count.increment();
 		String req = msg.content().toString(CharsetUtil.UTF_8);
 		long startTime = System.nanoTime();
+		Request request = buildReq();
 		ActiveResource ar = new ActiveResource();
-		ar.activeAction(req);
+		ar.action(request);
 		//LOGGER.debug(req);
 
 		ByteBuf byteBuf = Unpooled.copiedBuffer(
@@ -71,6 +76,23 @@ public class CoAPServerHandler extends
 					totalTime.longValue());
 			totalTime.reset();
 		}
+	}
+	
+	private Request buildReq() {
+		Request request = new Request();
+		request.setUri("auth/gw/active");
+		request.setMethod("GET");
+		request.setVersion("CoAP/2.1");
+		Map<String, String> headers = new HashMap<>();
+		headers.put("User-Agent", "curl/7.41.0");
+		headers.put("Host", "192.168.1.109:8080");
+		headers.put("Content-type", "application/json");
+		request.setHeaders(headers);
+		Map<String, String> params = new HashMap<>();
+		params.put("devSn", "add");
+		params.put("devKey", "abc");
+		request.setParams(params);
+		return request;
 	}
 
 	@Override

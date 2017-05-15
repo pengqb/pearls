@@ -1,7 +1,6 @@
 package com.vela.iot.active.netty.coap;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -14,7 +13,7 @@ import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vela.iot.active.netty.http.ActiveResource;
+import com.vela.iot.auth.gw.active.ActiveResource;
 
 public class CoAPServer {
 	private static final Logger LOGGER = LoggerFactory

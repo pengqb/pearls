@@ -11,11 +11,14 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vela.iot.auth.gw.active.ActiveConf;
+import com.vela.iot.auth.gw.active.ActiveResource;
 import com.vela.iot.common.SwaggerAdapter;
 
 public class HttpServer {
@@ -80,6 +83,7 @@ public class HttpServer {
 							ChannelPipeline p = ch.pipeline();
 							p.addLast(new HttpServerCodec());
 							p.addLast(new HttpContentCompressor(1));
+							p.addLast(new HttpObjectAggregator(1024 * 1024)); // 在处理 POST消息体时需要加上
 							p.addLast(new HttpServerHandler());
 						}
 					})
