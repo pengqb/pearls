@@ -29,17 +29,17 @@ import io.netty.util.ReferenceCountUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vela.iot.auth.gw.active.ActiveResource;
+import com.vela.iot.common.Param;
 import com.vela.iot.common.Request;
 
 public class HttpServerHandler extends ChannelInboundHandlerAdapter {
@@ -69,7 +69,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof HttpRequest) {
 			HttpRequest req = (HttpRequest) msg;
 			HttpMethod method = req.method();
-			Map<String, String> params = new HashMap<>();
+			Map<Param, Object> params = new EnumMap<Param, Object>(Param.class);
 			try {
 				if (method.equals(HttpMethod.GET)) {
 					params = parseGetUri(req);
@@ -78,6 +78,9 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					FullHttpRequest fullRequest = (FullHttpRequest) msg;
 					params = parsePostContent(fullRequest);
 				}
+				//TODO 解析ip作为参数保存
+				params.put(Param.ip, "192.168.1.34");
+				
 			} catch (Exception e) {
 				LOGGER.error("channelRead error", e);
 				writeResponse(ctx, req,
@@ -96,16 +99,16 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 		}
 	}
 
-	private Map<String, String> parseGetUri(HttpRequest req) {
+	private Map<Param, Object> parseGetUri(HttpRequest req) {
 		String uri = req.uri();
-		Map<String, String> paramMap = new HashMap<>();
+		Map<Param, Object> paramMap = new HashMap<>();
 		QueryStringDecoder queryDecoder = new QueryStringDecoder(uri,
 				Charset.forName("UTF-8"));
 		Map<String, List<String>> uriAttributes = queryDecoder.parameters();
 		// 此处仅打印请求参数（你可以根据业务需求自定义处理）
 		for (Map.Entry<String, List<String>> attr : uriAttributes.entrySet()) {
 			for (String attrVal : attr.getValue()) {
-				paramMap.put(attr.getKey(), attrVal);
+				paramMap.put(Param.valueOf(attr.getKey()), attrVal);
 			}
 		}
 		return paramMap;
@@ -118,13 +121,14 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 	 * @param content
 	 * @throws Exception
 	 */
-	private Map<String, String> parsePostContent(FullHttpRequest fullRequest)
+	private Map<Param, Object> parsePostContent(FullHttpRequest fullRequest)
 			throws Exception {
 		String contentType = getContentType(fullRequest);
-		Map<String, String> map = new HashMap<>();
+		Map<Param, Object> map = new HashMap<>();
 		if (contentType.equals("application/json")) { // 可以使用HttpJsonDecoder
 			String jsonStr = fullRequest.content().toString(
 					Charset.forName("UTF-8"));
+			// TODO 这里有个bug，value值没有进行trim
 			ObjectMapper mapper = new ObjectMapper(); // 转换器
 			map = mapper.readValue(jsonStr, Map.class); // json转换成map
 		} else if (contentType.equals("application/x-www-form-urlencoded")
@@ -135,7 +139,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 			for (InterfaceHttpData data : datas) {
 				if (data.getHttpDataType() == HttpDataType.Attribute) {
 					Attribute attribute = (Attribute) data;
-					map.put(attribute.getName(), attribute.getValue());
+					map.put(Param.valueOf(attribute.getName()), attribute.getValue());
 				} else if (data.getHttpDataType() == HttpDataType.FileUpload) {// 用于文件上传
 					writeHttpData(data);
 				}
@@ -186,7 +190,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 		}
 	}
 
-	private Request buildReq(HttpRequest httpRequest,Map<String, String> params) {
+	private Request buildReq(HttpRequest httpRequest,Map<Param, Object> params) {
 		Request request = new Request();
 		request.setUri(httpRequest.uri());
 		request.setMethod(httpRequest.method().name());

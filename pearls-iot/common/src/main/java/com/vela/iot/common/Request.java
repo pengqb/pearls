@@ -7,7 +7,7 @@ public class Request {
 	private String method;
 	private String version;
 	private Map<String,String> headers;
-	private Map<String,String> params;
+	private Map<Param,Object> params;
 	public String getUri() {
 		return uri;
 	}
@@ -32,10 +32,10 @@ public class Request {
 	public void setHeaders(Map<String, String> headers) {
 		this.headers = headers;
 	}
-	public Map<String, String> getParams() {
+	public Map<Param, Object> getParams() {
 		return params;
 	}
-	public void setParams(Map<String, String> params) {
+	public void setParams(Map<Param, Object> params) {
 		this.params = params;
 	}	
 }

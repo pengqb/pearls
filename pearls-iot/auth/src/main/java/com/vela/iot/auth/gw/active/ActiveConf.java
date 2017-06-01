@@ -1,5 +1,6 @@
 package com.vela.iot.auth.gw.active;
 
+import static com.vela.iot.common.YamlConf.initBits;
 import io.netty.handler.codec.http.multipart.DiskFileUpload;
 
 import java.io.FileNotFoundException;
@@ -31,10 +32,10 @@ import com.mongodb.MongoClient;
 import com.vela.iot.common.AsyncMongoDbClient;
 import com.vela.iot.common.ESClient;
 import com.vela.iot.common.InfluxClient;
-import com.vela.iot.common.JedisClient;
-import com.vela.iot.common.LettuceClient;
 import com.vela.iot.common.MongoDbClient;
 import com.vela.iot.common.YamlConf;
+import com.vela.iot.common.redis.JedisClient;
+import com.vela.iot.common.redis.LettuceClient;
 
 public class ActiveConf {
 	static Logger log = LoggerFactory.getLogger(ActiveConf.class);
@@ -43,27 +44,27 @@ public class ActiveConf {
 		YamlConf conf = YamlConf.getInstance();
 		Map<String, Object> confMap = conf.parse("auth.yml");
 
-		if (ActiveResource.bits.get(1) || ActiveResource.bits.get(2)) {
+		if (initBits.get(1) || initBits.get(2)) {
 			Map<String, Object> redisConf = (Map<String, Object>) confMap
 					.get("redis");
 			initRedis(redisConf);
 			initLettuce(redisConf);
 		}
 		
-		if (ActiveResource.bits.get(3) || ActiveResource.bits.get(4)
-				|| ActiveResource.bits.get(5) || ActiveResource.bits.get(6)) {
+		if (initBits.get(3) || initBits.get(4)
+				|| initBits.get(5) || initBits.get(6)) {
 			Map<String, Object> mongoConf = (Map<String, Object>) confMap
 					.get("mongo");
 			initMongo(mongoConf);
 		}
 
-		if (ActiveResource.bits.get(7) || ActiveResource.bits.get(8)) {
+		if (initBits.get(7) || initBits.get(8)) {
 			Map<String, Object> influxConf = (Map<String, Object>) confMap
 					.get("influx");
 			initInfluxDb(influxConf);
 		}
 
-		if (ActiveResource.bits.get(9) || ActiveResource.bits.get(10) || ActiveResource.bits.get(11)) {
+		if (initBits.get(9) || initBits.get(10) || initBits.get(11)) {
 			Map<String, Object> esConf = (Map<String, Object>) confMap
 					.get("es");
 			initElasticSearch(esConf);

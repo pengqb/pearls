@@ -1,5 +1,6 @@
 package com.vela.iot.active.netty.coap;
 
+import static com.vela.iot.common.YamlConf.initBits;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -25,7 +26,7 @@ public class CoAPServer {
 			String funcBitsStr = args[0];
 			for (int i = 0; i < funcBitsStr.length(); i++) {
 				if (funcBitsStr.charAt(i) == '1')
-					ActiveResource.bits.flip(i);
+					initBits.flip(i);
 			}
 		}
 		String host = "0.0.0.0";

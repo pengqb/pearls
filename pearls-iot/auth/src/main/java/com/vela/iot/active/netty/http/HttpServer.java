@@ -1,5 +1,6 @@
 package com.vela.iot.active.netty.http;
 
+import static com.vela.iot.common.YamlConf.initBits;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -18,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vela.iot.auth.gw.active.ActiveConf;
-import com.vela.iot.auth.gw.active.ActiveResource;
 import com.vela.iot.common.SwaggerAdapter;
 
 public class HttpServer {
@@ -30,7 +30,7 @@ public class HttpServer {
 			String funcBitsStr = args[0];
 			for(int i=0;i< funcBitsStr.length();i++){
 				if(funcBitsStr.charAt(i) == '1')
-					ActiveResource.bits.flip(i);
+					initBits.flip(i);
 			}
 		}
 		ActiveConf conf = new ActiveConf();

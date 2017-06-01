@@ -1,4 +1,4 @@
-package com.vela.iot.common;
+package com.vela.iot.common.redis;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import com.vela.iot.common.redis.JedisClient;
 
 public class BaseRedisTest {
 

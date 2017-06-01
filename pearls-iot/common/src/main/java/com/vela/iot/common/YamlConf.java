@@ -3,6 +3,7 @@ package com.vela.iot.common;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.BitSet;
 import java.util.Map;
 import java.util.Optional;
 
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.dataformat.yaml.snakeyaml.Yaml;
 
 public class YamlConf {
 	private static YamlConf conf;
-
+	public static BitSet initBits = new BitSet(12);
 	private YamlConf() {
 	}
 

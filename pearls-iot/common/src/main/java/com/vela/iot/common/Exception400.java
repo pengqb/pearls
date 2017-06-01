@@ -5,7 +5,7 @@ public class Exception400 extends RuntimeException {
 	private String msg;
 	
 	public Exception400(String code,String msg){
-		super();
+		super(msg);
 		this.code = code;
 		this.msg = msg;
 	}

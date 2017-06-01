@@ -1,9 +1,20 @@
 package com.vela.iot.active.netty.coap;
 
+import io.netty.handler.codec.base64.Base64Encoder;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.Clock;
+import java.util.Base64;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.vela.iot.common.CacheType;
+import com.vela.iot.common.Param;
+import com.vela.iot.common.bean.Gateway;
 
 public class Test {
 	public static void main(String[] args) throws IOException,
@@ -70,37 +81,41 @@ public class Test {
 		// long timeEnd = System.nanoTime();
 		// System.out.printf("共%d次取时间,累计耗时%d\n", 10000, timeEnd - timeStart);
 
-		List<Integer> arrayList = new ArrayList<Integer>();
-		List<Integer> linkedList = new LinkedList<Integer>();
-
-		for (int i = 0; i < 100000; i++) {
-			arrayList.add(i);
-			linkedList.add(i);
-		}
-
-		long startTime = System.currentTimeMillis();
-		for (int i = 0; i < arrayList.size(); i++) {
-			arrayList.get(i);
-		}
-		System.out.println("ArrayList for遍历速度："
-				+ (System.currentTimeMillis() - startTime) + "ms");
-
-		startTime = System.currentTimeMillis();
-		for (Integer integer : arrayList) {
-		}
-		System.out.println("ArrayList foreach遍历速度："
-				+ (System.currentTimeMillis() - startTime) + "ms");
-
-		startTime = System.currentTimeMillis();
-		for (int i = 0; i < linkedList.size(); i++) {
-			linkedList.get(i);
-		}
-		System.out.println("LinkedList for遍历速度："
-				+ (System.currentTimeMillis() - startTime) + "ms");
-		startTime = System.currentTimeMillis();
-		for (Integer integer : linkedList) {
-		}
-		System.out.println("LinkedList foreach遍历速度："
-				+ (System.currentTimeMillis() - startTime) + "ms");
+//		List<Integer> arrayList = new ArrayList<Integer>();
+//		List<Integer> linkedList = new LinkedList<Integer>();
+//
+//		for (int i = 0; i < 100000; i++) {
+//			arrayList.add(i);
+//			linkedList.add(i);
+//		}
+//
+//		long startTime = System.currentTimeMillis();
+//		for (int i = 0; i < arrayList.size(); i++) {
+//			arrayList.get(i);
+//		}
+//		System.out.println("ArrayList for遍历速度："
+//				+ (System.currentTimeMillis() - startTime) + "ms");
+//
+//		startTime = System.currentTimeMillis();
+//		for (Integer integer : arrayList) {
+//		}
+//		System.out.println("ArrayList foreach遍历速度："
+//				+ (System.currentTimeMillis() - startTime) + "ms");
+//
+//		startTime = System.currentTimeMillis();
+//		for (int i = 0; i < linkedList.size(); i++) {
+//			linkedList.get(i);
+//		}
+//		System.out.println("LinkedList for遍历速度："
+//				+ (System.currentTimeMillis() - startTime) + "ms");
+//		startTime = System.currentTimeMillis();
+//		for (Integer integer : linkedList) {
+//		}
+//		System.out.println("LinkedList foreach遍历速度："
+//				+ (System.currentTimeMillis() - startTime) + "ms");
+		
+		System.out.println(Gateway.active.getCls());
 	}
+	
+	
 }

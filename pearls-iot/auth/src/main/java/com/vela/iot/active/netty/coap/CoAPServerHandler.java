@@ -7,9 +7,9 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
-import io.netty.handler.codec.http.HttpRequest;
 import io.netty.util.CharsetUtil;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.LongAdder;
@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vela.iot.auth.gw.active.ActiveResource;
+import com.vela.iot.common.Param;
 import com.vela.iot.common.Request;
 
 public class CoAPServerHandler extends
@@ -88,9 +89,9 @@ public class CoAPServerHandler extends
 		headers.put("Host", "192.168.1.109:8080");
 		headers.put("Content-type", "application/json");
 		request.setHeaders(headers);
-		Map<String, String> params = new HashMap<>();
-		params.put("devSn", "add");
-		params.put("devKey", "abc");
+		Map<Param, Object> params = new EnumMap<Param, Object>(Param.class);
+		params.put(Param.valueOf("devSn"), "add");
+		params.put(Param.valueOf("devKey"), "abc");
 		request.setParams(params);
 		return request;
 	}

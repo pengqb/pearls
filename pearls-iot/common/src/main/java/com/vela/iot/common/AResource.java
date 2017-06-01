@@ -11,10 +11,8 @@ public abstract class AResource implements IResource {
 	public String action(Request request) {
 		try{
 			logRequest(request);
-			PubParamVerifier pubParamVerifier = new PubParamVerifier();
-			pubParamVerifier.verify(request.getParams());
-			
-			
+			PubParamVerifier.getInstance().verify(request.getParams());
+			SignatureVerifier.getInstance().verifySign(request.getParams());
 			
 			execute(request);
 		}catch(Exception400 e){
